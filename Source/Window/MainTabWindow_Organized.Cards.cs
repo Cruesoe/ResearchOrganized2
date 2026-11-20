@@ -18,8 +18,15 @@ namespace ResearchOrganized2
             public string cost;
             public string hoverBody;
             public int hoverVersion = -1;
+            public int hoverHour = -1;
             public readonly List<Def> icons = new List<Def>();
             public int iconsVersion = -1;
+            public string time;
+            public int timeHour = -1;
+            public int timeStats = -1;
+            public string status;
+            public string statusFirst;
+            public string statusTime;
         }
 
         /// <summary>Up to three things the project unlocks without further research, refreshed as research completes.</summary>
@@ -69,10 +76,12 @@ namespace ResearchOrganized2
         private static string HoverText(ResearchProjectDef project, CardInfo info)
         {
             int version = ResearchOrganizedMain.StatsVersion;
-            if (info.hoverBody == null || info.hoverVersion != version)
+            int hour = ResearchRate.Hour;
+            if (info.hoverBody == null || info.hoverVersion != version || info.hoverHour != hour)
             {
                 info.hoverBody = HoverBody(project);
                 info.hoverVersion = version;
+                info.hoverHour = hour;
             }
             return info.hoverBody;
         }
@@ -107,6 +116,8 @@ namespace ResearchOrganized2
             if (!project.description.NullOrEmpty()) text.AppendLine(project.description).AppendLine();
             if (ResearchOrganizedLayout.IsFoundationTech(project)) text.AppendLine("ResearchOrganized2_HoverFoundation".Translate()).AppendLine();
             text.AppendLine("ResearchOrganized2_HoverCost".Translate(project.CostApparent.ToString("F0")));
+            string time = HoverTime(project);
+            if (time != null) text.AppendLine(time);
             if (!project.prerequisites.NullOrEmpty())
             {
                 text.Append("ResearchOrganized2_HoverNeeds".Translate()).Append(' ');
@@ -128,6 +139,14 @@ namespace ResearchOrganized2
                 any = true;
             }
             return text.ToString().TrimEnd();
+        }
+
+        /// <summary>The hover card's time line: the estimate at the recent pace, or when one will appear; null when there is nothing to time.</summary>
+        private static string HoverTime(ResearchProjectDef project)
+        {
+            if (!ResearchOrganizedMod.settings.showTimeLeft || ResearchRate.WorkLeft(project) <= 0f) return null;
+            int ticks = ResearchRate.TicksLeft(project);
+            return ticks > 0 ? "ResearchOrganized2_HoverTime".Translate(ticks.ToStringTicksToPeriod(false)) : "ResearchOrganized2_HoverTimeUnknown".Translate();
         }
 
         /// <summary>"a/b", cached by its two numbers.</summary>
@@ -325,7 +344,7 @@ namespace ResearchOrganized2
             }
             else if (current)
             {
-                CoreWidgets.Line(status, Percent(project.ProgressPercent), Faces.Fade(Theme.TextYellow, alpha));
+                CoreWidgets.Line(status, StatusLine(project, info, true), Faces.Fade(Theme.TextYellow, alpha));
             }
             else
             {
@@ -334,8 +353,39 @@ namespace ResearchOrganized2
                     CoreWidgets.DrawIcon(new Rect(status.x, status.y + 3f, 14f, 14f), lockedIcon, Faces.Fade(Theme.TextFaint, alpha));
                     status.xMin += 18f;
                 }
-                CoreWidgets.Line(status, info.cost, Faces.Fade(locked ? Theme.TextFaint : Theme.TextDim, alpha));
+                CoreWidgets.Line(status, StatusLine(project, info, false), Faces.Fade(locked ? Theme.TextFaint : Theme.TextDim, alpha));
             }
+        }
+
+        /// <summary>The project's time to research at the recent pace, short form ("2.3 days"); null without an estimate.</summary>
+        private static string ResearchTime(ResearchProjectDef project, CardInfo info)
+        {
+            if (!ResearchOrganizedMod.settings.showTimeLeft) return null;
+            int hour = ResearchRate.Hour;
+            int stats = ResearchOrganizedMain.StatsVersion;
+            if (info.timeHour != hour || info.timeStats != stats)
+            {
+                info.timeHour = hour;
+                info.timeStats = stats;
+                int ticks = ResearchRate.TicksLeft(project);
+                info.time = ticks > 0 ? ticks.ToStringTicksToPeriod(false, true) : null;
+            }
+            return info.time;
+        }
+
+        /// <summary>Cost (or progress, for the current project) and research time, as the card's status line.</summary>
+        private static string StatusLine(ResearchProjectDef project, CardInfo info, bool current)
+        {
+            string time = ResearchTime(project, info);
+            string first = current ? Percent(project.ProgressPercent) : info.cost;
+            if (time == null) return first;
+            if (!ReferenceEquals(info.statusFirst, first) || !ReferenceEquals(info.statusTime, time))
+            {
+                info.statusFirst = first;
+                info.statusTime = time;
+                info.status = first + "  ·  " + time;
+            }
+            return info.status;
         }
 
         /// <summary>An icon and "a/b" right-aligned before <paramref name="right"/>; returns the new right edge.</summary>

@@ -11,7 +11,8 @@ In some cases the result is not strictly linear, but I believe it makes the tree
 [*]Era bands tint each era's columns, with the era's title pinned along the top, on tabs laid out era by era.
 [*]A research queue in a foldable panel on the left: shift-click a project to queue it along with any prerequisites it still needs, and drag to reorder. When the current project finishes, the next one starts. Folded, the queue still shows as icons.
 [*]A foldable details panel on the right shows what the selected project needs (met or not), what it unlocks now and with more research, what it leads to, and buttons to research or queue it.
-[*]A bar along the top shows the current project's progress and roughly how long it has left, at the colony's recent research pace.
+[*]A bar along the top shows the current project's progress.
+[*]Research times: roughly how long each project takes to research is shown on its card, hover card and details, the progress bar shows how long the current project has left, and queue rows show when each project should be done, all at the colony's research pace over the last day (saved with the game).
 [*]Search finds projects by name or by anything they unlock, and chips show or hide locked, finished and future-era projects.
 [/list]
 
@@ -28,7 +29,7 @@ In some cases the result is not strictly linear, but I believe it makes the tree
 
 [h2]Settings[/h2]
 [list]
-[*][b]Research window[/b]: full screen (on by default), open on the current project, tab project counts, curved lines, whole-chain highlight, era bands, time left, and hiding Node Research's emergence lines.
+[*][b]Research window[/b]: full screen (on by default), open on the current project, tab project counts, curved lines, whole-chain highlight, era bands, research times, and hiding Node Research's emergence lines.
 [*][b]Cards[/b]: card size, unlock icons, techprint and study counters, progress strip and hover card.
 [*][b]Tabs[/b]: Combine All Tabs puts everything except Anomaly, Gravship and Save Our Ship 2 on the Main tab, with each era in its own block from left to right, with or without a gap and lines between eras. Combine Industrial merges High and Late Industrial back into one Industrial tab.
 [*][b]Colors[/b]: color cards by era, or use plain cards. Each era's color is picked on UI Rethemed - Core's settings page.

@@ -57,6 +57,7 @@ namespace ResearchOrganized2
         private Color detailsStatusColor;
         private string detailsEra;
         private string detailsProgress;
+        private string detailsTime;
         private float headerHeight;
         private readonly List<string> lockedReasons = new List<string>();
         private string lockedTip;
@@ -147,11 +148,12 @@ namespace ResearchOrganized2
 
             // Tags: era, status, foundation, place in the queue.
             float tagX = x;
-            tagX = Tag(tagX, y, detailsEra, era);
-            tagX = Tag(tagX, y, detailsStatus, detailsStatusColor);
-            if (ResearchOrganizedLayout.IsFoundationTech(project)) tagX = Tag(tagX, y, TranslationCache.Get("ResearchOrganized2_Foundation"), FoundationGold);
+            tagX = Tag(tagX, y, detailsEra, era, header.xMax - 10f);
+            tagX = Tag(tagX, y, detailsStatus, detailsStatusColor, header.xMax - 10f);
+            if (ResearchOrganizedLayout.IsFoundationTech(project)) tagX = Tag(tagX, y, TranslationCache.Get("ResearchOrganized2_Foundation"), FoundationGold, header.xMax - 10f);
             int queued = ProjectQueue.IndexOf(project);
-            if (queued >= 0) Tag(tagX, y, "ResearchOrganized2_QueuedAt".Translate(queued + 1), Theme.HighlightBlue);
+            if (queued >= 0) tagX = Tag(tagX, y, "ResearchOrganized2_QueuedAt".Translate(queued + 1), Theme.HighlightBlue, header.xMax - 10f);
+            Tag(tagX, y, detailsTime, Theme.HighlightGray, header.xMax - 10f);
             y += 26f;
 
             if (!project.IsFinished && project.ProgressPercent > 0f || Find.ResearchManager.IsCurrentProject(project))
@@ -163,10 +165,12 @@ namespace ResearchOrganized2
         }
 
         /// <summary>A small colored tag; returns the x after it.</summary>
-        private static float Tag(float x, float y, string label, Color color)
+        private static float Tag(float x, float y, string label, Color color, float right)
         {
             if (label.NullOrEmpty()) return x;
             float width = CoreWidgets.Width(label) + 14f;
+            // Tags that don't fit on the line are left out.
+            if (x + width > right) return x;
             Rect tag = new Rect(x, y, width, 22f);
             if (Event.current.type == EventType.Repaint)
             {
@@ -308,6 +312,8 @@ namespace ResearchOrganized2
             detailsProgress = project.ProgressApparentString + " / " + info.cost;
             int ticks = current && ResearchOrganizedMod.settings.showTimeLeft ? ResearchRate.TicksLeft(project) : -1;
             if (ticks > 0) detailsProgress += ", " + "ResearchOrganized2_TimeLeft".Translate(ticks.ToStringTicksToPeriod());
+            int time = ResearchOrganizedMod.settings.showTimeLeft ? ResearchRate.TicksLeft(project) : -1;
+            detailsTime = time > 0 ? "ResearchOrganized2_TimeTag".Translate(time.ToStringTicksToPeriod(false, true)).ToString() : null;
 
             float headerWidth = width + 16f - 24f;
             bool progress = !project.IsFinished && project.ProgressPercent > 0f || current;

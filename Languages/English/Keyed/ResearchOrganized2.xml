@@ -113,9 +113,12 @@
 
   <ResearchOrganized2_EraBands>Era Bands</ResearchOrganized2_EraBands>
   <ResearchOrganized2_EraBandsTip>On tabs laid out era by era, tints each era's columns and shows its name along the top.</ResearchOrganized2_EraBandsTip>
-  <ResearchOrganized2_ShowTimeLeft>Show Time Left</ResearchOrganized2_ShowTimeLeft>
-  <ResearchOrganized2_ShowTimeLeftTip>Shows roughly how long the current project will take, at the colony's research pace over the last day. Appears after an hour of research.</ResearchOrganized2_ShowTimeLeftTip>
+  <ResearchOrganized2_ShowTimeLeft>Show Research Times</ResearchOrganized2_ShowTimeLeft>
+  <ResearchOrganized2_ShowTimeLeftTip>Shows roughly how long each project takes to research, on its card, hover card and details, how long the current project has left, and when each queued project should be done. Times use the colony's research pace over the last day, are saved with the game, and appear after an hour of research.</ResearchOrganized2_ShowTimeLeftTip>
   <ResearchOrganized2_TimeLeft>about {0} left</ResearchOrganized2_TimeLeft>
+  <ResearchOrganized2_TimeTag>about {0}</ResearchOrganized2_TimeTag>
+  <ResearchOrganized2_HoverTime>Time: about {0} at the colony's recent research pace</ResearchOrganized2_HoverTime>
+  <ResearchOrganized2_HoverTimeUnknown>Time: shown once the colony has done an hour of research</ResearchOrganized2_HoverTimeUnknown>
   <ResearchOrganized2_CardSize>Card Size</ResearchOrganized2_CardSize>
   <ResearchOrganized2_CardSizeTip>Compact cards show the project's name only and fit more on screen; Large cards have room for bigger icons.</ResearchOrganized2_CardSizeTip>
   <ResearchOrganized2_CardSizeButtonTip>Now {0}. Click to change.</ResearchOrganized2_CardSizeButtonTip>

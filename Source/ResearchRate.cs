@@ -1,11 +1,13 @@
+using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace ResearchOrganized2
 {
-    /// <summary>The colony's recent research speed, from the points colonists add to the current project,
-    /// kept in hourly buckets over the last day. Lifetime: one game; cleared when another game is loaded.</summary>
+    /// <summary>The colony's recent research speed, from the points colonists add to the current project, kept in hourly
+    /// buckets over the last day. Points are stored before the tech-level cost factor, so any project's time can be worked
+    /// out from them. Lifetime: one game; saved with it by ProjectQueueComponent and cleared when another game is loaded.</summary>
     internal static class ResearchRate
     {
         private const int BucketTicks = GenDate.TicksPerHour;
@@ -40,13 +42,25 @@ namespace ResearchOrganized2
         {
             if (__state.project == null) return;
             float added = __instance.GetProgress(__state.project) - __state.before;
-            if (added > 0f) Record(added);
+            if (added > 0f) Record(added * CostFactor(__state.project));
+        }
+
+        /// <summary>The project's cost factor for the colony's tech level, which vanilla divides each research step by.</summary>
+        private static float CostFactor(ResearchProjectDef project)
+        {
+            var faction = Faction.OfPlayerSilentFail;
+            return faction != null ? project.CostFactor(faction.def.techLevel) : 1f;
         }
 
         private static void EnsureGame()
         {
             if (Current.Game == game) return;
             game = Current.Game;
+            Clear();
+        }
+
+        private static void Clear()
+        {
             firstTick = -1;
             for (int i = 0; i < Buckets; i++)
             {
@@ -70,14 +84,42 @@ namespace ResearchOrganized2
             points[index] += added;
         }
 
+        /// <summary>Saves and loads the last day's buckets with the game, so estimates carry on after a load.</summary>
+        public static void ExposeData()
+        {
+            List<float> savedPoints = null;
+            List<int> savedHours = null;
+            int savedFirst = firstTick;
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                EnsureGame();
+                savedPoints = new List<float>(points);
+                savedHours = new List<int>(bucketHour);
+                savedFirst = firstTick;
+            }
+            Scribe_Collections.Look(ref savedPoints, "ratePoints", LookMode.Value);
+            Scribe_Collections.Look(ref savedHours, "rateHours", LookMode.Value);
+            Scribe_Values.Look(ref savedFirst, "rateFirstTick", -1);
+            if (Scribe.mode != LoadSaveMode.LoadingVars) return;
+            game = Current.Game;
+            Clear();
+            if (savedPoints == null || savedHours == null || savedPoints.Count != Buckets || savedHours.Count != Buckets) return;
+            for (int i = 0; i < Buckets; i++)
+            {
+                points[i] = savedPoints[i];
+                bucketHour[i] = savedHours[i];
+            }
+            firstTick = savedFirst;
+        }
+
         /// <summary>The current game hour, so callers can refresh cached estimates once an hour.</summary>
         public static int Hour => Find.TickManager != null ? Find.TickManager.TicksGame / BucketTicks : 0;
 
-        /// <summary>Progress per tick over the last day, or 0 until there is at least an hour of data.</summary>
-        public static float PerTick()
+        /// <summary>Research points per tick, before cost factors, over the last day; 0 until there is at least an hour of data.</summary>
+        private static float PointsPerTick()
         {
             EnsureGame();
-            if (firstTick < 0) return 0f;
+            if (firstTick < 0 || Find.TickManager == null) return 0f;
             int tick = Find.TickManager.TicksGame;
             int span = System.Math.Min(tick - firstTick, Buckets * BucketTicks);
             if (span < BucketTicks) return 0f;
@@ -88,14 +130,25 @@ namespace ResearchOrganized2
             return sum / span;
         }
 
-        /// <summary>Ticks left on a standard research project at the recent pace; -1 when there is no estimate.</summary>
-        public static int TicksLeft(ResearchProjectDef project)
+        public static bool HasEstimate => PointsPerTick() > 0f;
+
+        /// <summary>Points of work left on a standard research project, before cost factors; 0 when there is none to time.</summary>
+        public static float WorkLeft(ResearchProjectDef project)
         {
-            if (project == null || project.knowledgeCategory != null || project.IsFinished) return -1;
-            float rate = PerTick();
-            if (rate <= 0f) return -1;
+            if (project == null || project.knowledgeCategory != null || project.IsFinished || project.baseCost <= 0f) return 0f;
             float left = project.Cost - project.ProgressReal;
-            return left <= 0f ? -1 : (int)System.Math.Min(left / rate, int.MaxValue);
+            return left > 0f ? left * CostFactor(project) : 0f;
         }
+
+        /// <summary>Ticks to research this much work at the recent pace; -1 when there is no estimate.</summary>
+        public static int TicksFor(float work)
+        {
+            float rate = PointsPerTick();
+            if (rate <= 0f || work <= 0f) return -1;
+            return (int)System.Math.Min(work / rate, int.MaxValue);
+        }
+
+        /// <summary>Ticks left on a standard research project at the recent pace; -1 when there is no estimate.</summary>
+        public static int TicksLeft(ResearchProjectDef project) => TicksFor(WorkLeft(project));
     }
 }

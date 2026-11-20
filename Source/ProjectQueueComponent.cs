@@ -4,8 +4,8 @@ using Verse;
 
 namespace ResearchOrganized2
 {
-    /// <summary>The research queue, saved with the game: when the current project finishes, the first queued project
-    /// that can start is researched next. Standard research only; Anomaly knowledge projects use their own slots.</summary>
+    /// <summary>The research queue and research pace, saved with the game: when the current project finishes, the first queued
+    /// project that can start is researched next. Standard research only; Anomaly knowledge projects use their own slots.</summary>
     public class ProjectQueueComponent : GameComponent
     {
         public List<ResearchProjectDef> queue = new List<ResearchProjectDef>();
@@ -23,6 +23,8 @@ namespace ResearchOrganized2
         public override void ExposeData()
         {
             Scribe_Collections.Look(ref queue, "queue", LookMode.Def);
+            // The colony's research pace over the last day, so time estimates carry on after loading.
+            ResearchRate.ExposeData();
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 queue = queue ?? new List<ResearchProjectDef>();

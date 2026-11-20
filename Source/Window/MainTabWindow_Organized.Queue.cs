@@ -115,15 +115,17 @@ namespace ResearchOrganized2
             queueNotes.Clear();
             // Work left in front of each row: the current project's remainder, then each queued project in turn.
             var current = Find.ResearchManager.GetProject();
-            float ahead = current != null ? Mathf.Max(0f, current.Cost - current.ProgressReal) : 0f;
-            float perTick = ResearchRate.PerTick();
+            float ahead = ResearchRate.WorkLeft(current);
+            bool timed = ResearchOrganizedMod.settings.showTimeLeft && ResearchRate.HasEstimate;
             for (int i = 0; i < items.Count; i++)
             {
                 var project = items[i];
-                ahead += Mathf.Max(0f, project.Cost - project.ProgressReal);
+                float work = ResearchRate.WorkLeft(project);
+                ahead += work;
                 string cost = Info(project).cost;
-                if (perTick > 0f && ResearchOrganizedMod.settings.showTimeLeft)
-                    queueNotes.Add(cost + "  ·  " + "ResearchOrganized2_QueueDoneIn".Translate(((int)Mathf.Min(ahead / perTick, int.MaxValue)).ToStringTicksToPeriod()));
+                if (timed)
+                    queueNotes.Add(cost + "  ·  " + ResearchRate.TicksFor(work).ToStringTicksToPeriod(false, true) + "  ·  "
+                        + "ResearchOrganized2_QueueDoneIn".Translate(ResearchRate.TicksFor(ahead).ToStringTicksToPeriod(false)));
                 else
                     queueNotes.Add(cost);
             }
