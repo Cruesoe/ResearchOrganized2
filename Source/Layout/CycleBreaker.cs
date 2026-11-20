@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ResearchOrganized.Layout
+namespace ResearchOrganized2.Layout
 {
     /// <summary>
     /// Finds every cyclic strongly connected component and gives each one a deterministic

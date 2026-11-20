@@ -1,4 +1,4 @@
-# Research: Organized
+# Research: Organized 2
 
 Sorts research projects into tech-level tabs and lays each tab out as a tidy, readable tree.
 

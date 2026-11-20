@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     /// <summary>A look supplied by an optional assembly (the UI Rethemed add-on, loaded only with UI Rethemed - Core).
     /// Draw methods return false when they drew nothing, and the caller then draws the mod's own look.</summary>
@@ -26,7 +26,7 @@ namespace ResearchOrganized
         {
             if (failed) return;
             failed = true;
-            Log.Warning("[Research: Organized] UI Rethemed look turned off for this session after an error: " + e);
+            Log.Warning("[Research: Organized 2] UI Rethemed look turned off for this session after an error: " + e);
         }
 
         /// <summary>A card color by key (a tech level's name, "Anomaly"), from Core's per-mod palette; null leaves the mod's own.</summary>

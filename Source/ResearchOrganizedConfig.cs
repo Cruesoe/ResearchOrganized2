@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     public class ResearchOrganizedConfig : Def
     {

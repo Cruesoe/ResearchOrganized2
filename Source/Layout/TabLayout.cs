@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ResearchOrganized.Layout
+namespace ResearchOrganized2.Layout
 {
     /// <summary>
     /// Lays out one research tab. Cycles (a mod's malformed prerequisites) are broken first so

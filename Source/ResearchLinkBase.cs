@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     public abstract class ResearchLinkBase
     {

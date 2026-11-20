@@ -1,4 +1,4 @@
-namespace ResearchOrganized.Layout
+namespace ResearchOrganized2.Layout
 {
     /// <summary>Dependency-free tab routing policy, separated from RimWorld def lookup for tests.</summary>
     public static class TabRoutingPolicy

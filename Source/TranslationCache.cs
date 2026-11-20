@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     /// <summary>Translated keyed text for draw code, translated once per key and cleared when the language changes.</summary>
     public static class TranslationCache

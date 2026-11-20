@@ -8,7 +8,7 @@ using UnityEngine;
 using Verse;
 using Verse.Sound;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     public static partial class ResearchOrganizedMain
     {
@@ -140,7 +140,7 @@ namespace ResearchOrganized
             var gearRect = new Rect(right - SettingsButtonSize, top, SettingsButtonSize, SettingsButtonSize);
             var toggleRect = new Rect(gearRect.x - SettingsButtonGap - SettingsButtonSize, top, SettingsButtonSize, SettingsButtonSize);
 
-            if (WindowButton(gearRect, SettingsGearTex, "gear", TranslationCache.Get("ResearchOrganized_SettingsButtonTip")))
+            if (WindowButton(gearRect, SettingsGearTex, "gear", TranslationCache.Get("ResearchOrganized2_SettingsButtonTip")))
             {
                 var mod = LoadedModManager.GetMod<ResearchOrganizedMod>();
                 if (mod != null) Find.WindowStack.Add(new Dialog_ModSettings(mod));
@@ -148,7 +148,7 @@ namespace ResearchOrganized
             }
 
             bool fullScreen = ResearchOrganizedMod.settings.fullScreenResearch;
-            string toggleTip = TranslationCache.Get(fullScreen ? "ResearchOrganized_ExitFullScreenTip" : "ResearchOrganized_EnterFullScreenTip");
+            string toggleTip = TranslationCache.Get(fullScreen ? "ResearchOrganized2_ExitFullScreenTip" : "ResearchOrganized2_EnterFullScreenTip");
             if (WindowButton(toggleRect, fullScreen ? ExitFullScreenTex : EnterFullScreenTex, fullScreen ? "arrows-in" : "arrows-out", toggleTip))
             {
                 ResearchOrganizedMod.settings.fullScreenResearch = !fullScreen;
@@ -210,7 +210,7 @@ namespace ResearchOrganized
                     researchWindowWidthStale = true;
                 }
             }
-            catch (Exception ex) { Log.Error($"[Research: Organized] Research window refresh error: {ex.Message}"); }
+            catch (Exception ex) { Log.Error($"[Research: Organized 2] Research window refresh error: {ex.Message}"); }
         }
 
         private static bool researchWindowWidthStale;
@@ -301,7 +301,7 @@ namespace ResearchOrganized
             if (!(TabRecordDef(__instance) is ResearchTabDef tabDef)) return;
 
             var stats = GetTabStats(tabDef);
-            string counts = "ResearchOrganized_TabCounts".Translate(stats.completedProjects, stats.totalProjects,
+            string counts = "ResearchOrganized2_TabCounts".Translate(stats.completedProjects, stats.totalProjects,
                 stats.completedPoints.ToString("F0"), stats.totalPoints.ToString("F0"));
             __result = __result.NullOrEmpty() ? counts : __result + "\n\n" + counts;
         }

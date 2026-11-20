@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ResearchOrganized.Layout;
+using ResearchOrganized2.Layout;
 
-namespace ResearchOrganized.Tests
+namespace ResearchOrganized2.Tests
 {
     /// <summary>
     /// Renders a real research tab as text so a layout can be judged without launching
     /// RimWorld. Reading a grid here takes seconds; the alternative has been asking someone
     /// to load a 200 mod save and send a screenshot.
     ///
-    ///   ResearchOrganized.Tests.exe dump &lt;graph file&gt; &lt;techLevel&gt; [cap]
+    ///   ResearchOrganized2.Tests.exe dump &lt;graph file&gt; &lt;techLevel&gt; [cap]
     /// </summary>
     internal static class Dump
     {

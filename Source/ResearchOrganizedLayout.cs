@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
-using ResearchOrganized.Layout;
+using ResearchOrganized2.Layout;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     /// <summary>
     /// Adapter between RimWorld's research defs and the pure layout core in
-    /// <see cref="ResearchOrganized.Layout"/>.
+    /// <see cref="ResearchOrganized2.Layout"/>.
     ///
     /// Everything game-specific lives here: reading prerequisites, deciding which projects
     /// matter most on a tab, and writing coordinates back onto the defs. The layout
@@ -210,7 +210,7 @@ namespace ResearchOrganized
         {
             var settings = ResearchOrganizedMod.settings;
             var sb = new System.Text.StringBuilder();
-            sb.AppendLine(string.Format("[Research: Organized] Layout log for tab '{0}' ({1} projects; minor {2}, major {3}, max {4} per column, combine all {5}, combine industrial {6})",
+            sb.AppendLine(string.Format("[Research: Organized 2] Layout log for tab '{0}' ({1} projects; minor {2}, major {3}, max {4} per column, combine all {5}, combine industrial {6})",
                 tabName, tabNodes.Count, settings.minorAnchorChildThreshold, settings.majorAnchorChildThreshold, options.maxNodesPerColumn,
                 settings.combineAllTabs, settings.combineIndustrial));
             foreach (string line in options.trace) sb.AppendLine(line);
@@ -299,7 +299,7 @@ namespace ResearchOrganized
             var described = result.ReversedEdges
                 .Select(e => tabNodes[e.Parent].defName + " -> " + tabNodes[e.Child].defName);
 
-            Log.Warning($"[Research: Organized] Circular research dependencies on tab '{tabName}'. " +
+            Log.Warning($"[Research: Organized 2] Circular research dependencies on tab '{tabName}'. " +
                         $"Reversed for layout purposes: [{string.Join(", ", described)}]. " +
                         $"Affected projects are outlined in red. This usually means a mod conflict or malformed XML.");
         }

@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using ResearchOrganized.Layout;
+using ResearchOrganized2.Layout;
 
-namespace ResearchOrganized.Tests
+namespace ResearchOrganized2.Tests
 {
     /// <summary>
     /// Rebuilds a tab from an in-game layout log (the "Write Layout Log" setting) and lays it out
     /// again with the current code, so a change can be judged against the real tree.
     ///
-    ///   ResearchOrganized.Tests.exe replay &lt;Player.log&gt; &lt;tabName&gt; [maxNodesPerColumn]
+    ///   ResearchOrganized2.Tests.exe replay &lt;Player.log&gt; &lt;tabName&gt; [maxNodesPerColumn]
     /// </summary>
     internal static class Replay
     {

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ResearchOrganized.Layout;
+using ResearchOrganized2.Layout;
 
-namespace ResearchOrganized.Tests
+namespace ResearchOrganized2.Tests
 {
     internal static class RepresentativeFixtures
     {

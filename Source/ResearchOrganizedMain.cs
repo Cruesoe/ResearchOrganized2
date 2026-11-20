@@ -5,12 +5,12 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     [StaticConstructorOnStartup]
     public static partial class ResearchOrganizedMain
     {
-        public const string HarmonyId = "cruesoe.research.organized";
+        public const string HarmonyId = "cruesoe.research.organized2";
         private const string MultiAnalyzerDef = "MultiAnalyzer";
         private const string HiTechBenchDef = "HiTechResearchBench";
         private const string TabAnomalyDef = "Anomaly";
@@ -177,7 +177,7 @@ namespace ResearchOrganized
                     }
                     catch (Exception ex)
                     {
-                        Log.Error($"[Research: Organized] Layout failed for tab '{tab.defName}', " +
+                        Log.Error($"[Research: Organized 2] Layout failed for tab '{tab.defName}', " +
                                   $"leaving it at its original coordinates. Other tabs are unaffected. {ex}");
                     }
                 }
@@ -193,7 +193,7 @@ namespace ResearchOrganized
                 // tab strip and current tab of its own that must follow. No-op outside a game.
                 RefreshOpenResearchWindow();
             }
-            catch (Exception ex) { Log.Error($"[Research: Organized] Master Organizer Error: {ex}"); }
+            catch (Exception ex) { Log.Error($"[Research: Organized 2] Master Organizer Error: {ex}"); }
         }
 
         private static void ResetCaches()

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
-using ResearchOrganized.Layout;
+using ResearchOrganized2.Layout;
 using RimWorld;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     public static partial class ResearchOrganizedMain
     {
@@ -134,7 +134,7 @@ namespace ResearchOrganized
             string report = string.Join(", ", described);
             if (described.Count > 0 && report != lastTechLevelReport)
             {
-                Log.Message($"[Research: Organized] Raised {described.Count} project(s) to their prerequisites' tech level: [{report}]");
+                Log.Message($"[Research: Organized 2] Raised {described.Count} project(s) to their prerequisites' tech level: [{report}]");
             }
             lastTechLevelReport = report;
         }
@@ -236,7 +236,7 @@ namespace ResearchOrganized
                     hiddenTabs.Add(tab);
                 }
             }
-            catch (Exception ex) { Log.Error($"[Research: Organized] Hide Tabs Error: {ex.Message}"); }
+            catch (Exception ex) { Log.Error($"[Research: Organized 2] Hide Tabs Error: {ex.Message}"); }
         }
 
         /// <summary>Puts every tab a previous pass removed from the def database back, so a rerun can refill it.</summary>
@@ -259,7 +259,7 @@ namespace ResearchOrganized
                     }
                 }
             }
-            catch (Exception ex) { Log.Error($"[Research: Organized] Restore Tabs Error: {ex.Message}"); }
+            catch (Exception ex) { Log.Error($"[Research: Organized 2] Restore Tabs Error: {ex.Message}"); }
             finally { hiddenTabs.Clear(); }
         }
 

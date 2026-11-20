@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ResearchOrganized.Layout
+namespace ResearchOrganized2.Layout
 {
     /// <summary>
     /// A directed graph over nodes 0..NodeCount-1. Edges run parent -> child.

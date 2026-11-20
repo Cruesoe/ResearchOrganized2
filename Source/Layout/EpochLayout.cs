@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ResearchOrganized.Layout
+namespace ResearchOrganized2.Layout
 {
     /// <summary>
     /// Lays out one research tab: group by tech level, place the cheap non-hub projects first,

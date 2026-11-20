@@ -1,4 +1,4 @@
-namespace ResearchOrganized.Layout
+namespace ResearchOrganized2.Layout
 {
     /// <summary>
     /// Keeps a follow-up project out of an era before its prerequisite's. A mod can give a

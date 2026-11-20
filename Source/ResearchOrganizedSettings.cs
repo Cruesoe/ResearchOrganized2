@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     public class ResearchOrganizedSettings : ModSettings
     {

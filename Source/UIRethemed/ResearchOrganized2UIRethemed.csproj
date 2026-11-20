@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <!-- Loaded only with UI Rethemed - Core (LoadFolders.xml), so it may reference Core; the main assembly never does. -->
   <PropertyGroup>
-    <RootNamespace>ResearchOrganizedUIRethemed</RootNamespace>
-    <AssemblyName>ResearchOrganizedUIRethemed</AssemblyName>
+    <RootNamespace>ResearchOrganized2UIRethemed</RootNamespace>
+    <AssemblyName>ResearchOrganized2UIRethemed</AssemblyName>
     <Nullable>disable</Nullable>
     <UseHarmony>false</UseHarmony>
     <UnityModules>CoreModule;IMGUIModule;TextRenderingModule</UnityModules>
@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ResearchOrganized.csproj" Private="false" />
+    <ProjectReference Include="..\ResearchOrganized2.csproj" Private="false" />
     <Reference Include="UIRethemedCore">
       <HintPath>$(UIRethemedCoreDll)</HintPath>
       <Private>false</Private>

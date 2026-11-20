@@ -7,7 +7,7 @@ using UnityEngine;
 using Verse;
 using Verse.Sound;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     public static partial class ResearchOrganizedMain
     {
@@ -91,7 +91,7 @@ namespace ResearchOrganized
             int idx = list.FindIndex(i => i.Calls(targetMethod));
             if (idx <= 2)
             {
-                Log.Warning("[Research: Organized] Could not find the research card draw in the research window; cards keep vanilla colors.");
+                Log.Warning("[Research: Organized 2] Could not find the research card draw in the research window; cards keep vanilla colors.");
                 return list;
             }
             list[idx].opcode = OpCodes.Call;
@@ -131,7 +131,7 @@ namespace ResearchOrganized
                 GUI.color = FoundationGold;
                 GUI.DrawTexture(notch, FoundationNotchTex);
                 GUI.color = previous;
-                TooltipHandler.TipRegion(rect, TranslationCache.Get("ResearchOrganized_FoundationTech"));
+                TooltipHandler.TipRegion(rect, TranslationCache.Get("ResearchOrganized2_FoundationTech"));
             }
             return result;
         }
@@ -222,7 +222,7 @@ namespace ResearchOrganized
                 }
             }
 
-            Log.Warning("[Research: Organized] Could not find the prerequisite line check in the research window; " +
+            Log.Warning("[Research: Organized 2] Could not find the prerequisite line check in the research window; " +
                         "lines between eras and to emergence nodes will still be drawn.");
             return list;
         }

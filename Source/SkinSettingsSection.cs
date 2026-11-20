@@ -1,7 +1,7 @@
 using System;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     /// <summary>One settings section: its body draws into a listing, so the plain page and a themed page share it.</summary>
     public sealed class SkinSettingsSection

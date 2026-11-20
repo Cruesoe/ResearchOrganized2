@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-  <!-- Research: Organized's tab on UI Rethemed - Core's settings page. The mod reads these colors by key
+  <!-- Research: Organized 2's tab on UI Rethemed - Core's settings page. The mod reads these colors by key
        (UIRethemedSkin.CategoryColor) while Match UI Rethemed theme is on; the defaults are the mod's own card colors. -->
   <UIRethemed.Core.ModThemeDef>
-    <defName>ResearchOrganized_Theme</defName>
+    <defName>ResearchOrganized2_Theme</defName>
     <label>research: organized</label>
     <description>The research window's project cards, tinted by tech level.</description>
-    <mod>cruesoe.research.organized</mod>
+    <mod>cruesoe.research.organized2</mod>
     <icon>tree-structure</icon>
     <order>210</order>
     <colors>

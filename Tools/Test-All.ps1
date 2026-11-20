@@ -5,13 +5,13 @@ $root = Split-Path $PSScriptRoot -Parent
 $failures = New-Object System.Collections.Generic.List[string]
 
 # Layout core tests (console exe; exit code 0 means every check passed)
-& dotnet run --project (Join-Path $root 'Tests\ResearchOrganized.Tests.csproj') -c Release --nologo | Select-Object -Last 1
+& dotnet run --project (Join-Path $root 'Tests\ResearchOrganized2.Tests.csproj') -c Release --nologo | Select-Object -Last 1
 if ($LASTEXITCODE -ne 0) { $failures.Add('Layout tests failed') }
 
 $sourceText = (Get-ChildItem (Join-Path $root 'Source') -Recurse -Filter *.cs | ForEach-Object { [IO.File]::ReadAllText($_.FullName) }) -join "`n"
 
 $used = New-Object System.Collections.Generic.HashSet[string]
-foreach ($m in [regex]::Matches($sourceText, '"(ResearchOrganized_[A-Za-z]+)"')) { [void]$used.Add($m.Groups[1].Value) }
+foreach ($m in [regex]::Matches($sourceText, '"(ResearchOrganized2_[A-Za-z]+)"')) { [void]$used.Add($m.Groups[1].Value) }
 
 $keyed = New-Object System.Collections.Generic.HashSet[string]
 foreach ($file in Get-ChildItem (Join-Path $root 'Languages\English\Keyed') -Filter *.xml) {

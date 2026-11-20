@@ -3,7 +3,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     /// <summary>Research Icons widens research cards (172 px by default, settable per project) to fit
     /// its icon. Reflective and entirely optional - with Research Icons absent, or its internals
@@ -26,7 +26,7 @@ namespace ResearchOrganized
             try { return getProjectWidth(project); }
             catch (Exception ex)
             {
-                Log.Error($"[Research: Organized] Research Icons card width error: {ex.Message}");
+                Log.Error($"[Research: Organized 2] Research Icons card width error: {ex.Message}");
                 getProjectWidth = null;
                 return VanillaCardWidth;
             }

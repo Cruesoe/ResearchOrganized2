@@ -8,7 +8,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     /// <summary>
     /// Gives the vanilla research window the UI Rethemed look while Match UI Rethemed Theme is on: its background, tab strip,
@@ -53,7 +53,7 @@ namespace ResearchOrganized
             var target = AccessTools.Method(typeof(MainTabWindow_Research), method);
             if (target == null)
             {
-                Log.Warning($"[Research: Organized] MainTabWindow_Research.{method} not found; that part of the window keeps the vanilla look.");
+                Log.Warning($"[Research: Organized 2] MainTabWindow_Research.{method} not found; that part of the window keeps the vanilla look.");
                 return;
             }
             harmony.Patch(target, transpiler: new HarmonyMethod(typeof(ResearchWindowTheme), transpiler));
@@ -131,7 +131,7 @@ namespace ResearchOrganized
                     : helper;
                 if (!SameSignature(called, replacement))
                 {
-                    Log.Warning($"[Research: Organized] {where}: {called.Name} has changed; that part of the research window keeps the vanilla look.");
+                    Log.Warning($"[Research: Organized 2] {where}: {called.Name} has changed; that part of the research window keeps the vanilla look.");
                     return;
                 }
                 list[i].opcode = OpCodes.Call;
@@ -141,7 +141,7 @@ namespace ResearchOrganized
                     return;
             }
             if (!any)
-                Log.Warning($"[Research: Organized] {where}: no {helperName} call found; that part of the research window keeps the vanilla look.");
+                Log.Warning($"[Research: Organized 2] {where}: no {helperName} call found; that part of the research window keeps the vanilla look.");
         }
 
         private static bool SameSignature(MethodInfo a, MethodInfo b)

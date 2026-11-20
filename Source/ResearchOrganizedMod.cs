@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     public class ResearchOrganizedMod : Mod
     {
@@ -53,7 +53,7 @@ namespace ResearchOrganized
             majorThresholdBuffer = settings.majorAnchorChildThreshold.ToString();
         }
 
-        public override string SettingsCategory() => "Research: Organized";
+        public override string SettingsCategory() => "Research: Organized 2";
 
         /// <summary>Saves, refreshes colors and the visibility filter, and rebuilds the layout when a structural setting changed.</summary>
         public override void WriteSettings()
@@ -90,13 +90,13 @@ namespace ResearchOrganized
             if (leftSections != null) return;
             leftSections = new List<SkinSettingsSection>
             {
-                new SkinSettingsSection("ResearchWindow", T("ResearchOrganized_SectionResearchWindow"), DrawResearchWindowSection),
-                new SkinSettingsSection("Tabs", T("ResearchOrganized_SectionTabs"), DrawTabsSection)
+                new SkinSettingsSection("ResearchWindow", T("ResearchOrganized2_SectionResearchWindow"), DrawResearchWindowSection),
+                new SkinSettingsSection("Tabs", T("ResearchOrganized2_SectionTabs"), DrawTabsSection)
             };
             rightSections = new List<SkinSettingsSection>
             {
-                new SkinSettingsSection("Colors", T("ResearchOrganized_SectionColors"), DrawColorsSection),
-                new SkinSettingsSection("Layout", T("ResearchOrganized_SectionLayout"), DrawLayoutSection)
+                new SkinSettingsSection("Colors", T("ResearchOrganized2_SectionColors"), DrawColorsSection),
+                new SkinSettingsSection("Layout", T("ResearchOrganized2_SectionLayout"), DrawLayoutSection)
             };
         }
 
@@ -132,7 +132,7 @@ namespace ResearchOrganized
             }
 
             Rect resetRect = new Rect(inRect.x, inRect.yMax - ResetButtonHeight, 200f, ResetButtonHeight);
-            string resetLabel = T("ResearchOrganized_ResetDefaults");
+            string resetLabel = T("ResearchOrganized2_ResetDefaults");
             skin = ResearchSkin.Active;
             bool reset = skin != null && skin.Button(resetRect, resetLabel, SkinTone.Gray, true)
                 ? Widgets.ButtonInvisible(resetRect)
@@ -161,13 +161,13 @@ namespace ResearchOrganized
         private void DrawResearchWindowSection(Listing_Standard listing)
         {
             // Only with UI Rethemed - Core, which loads the add-on that supplies the look.
-            Checkbox(listing, "ResearchOrganized_MatchUIRethemed", "ResearchOrganized_MatchUIRethemedTip", ref settings.matchUIRethemed,
-                disabled: !ResearchSkin.Available, disabledTipKey: "ResearchOrganized_MatchUIRethemedLockedTip");
-            Checkbox(listing, "ResearchOrganized_FullScreen", "ResearchOrganized_FullScreenTip", ref settings.fullScreenResearch);
-            Checkbox(listing, "ResearchOrganized_HideUnavailable", "ResearchOrganized_HideUnavailableTip", ref settings.hideUnavailableProjects);
-            Checkbox(listing, "ResearchOrganized_HideFutureTechLevels", "ResearchOrganized_HideFutureTechLevelsTip", ref settings.hideFutureTechLevels);
-            Checkbox(listing, "ResearchOrganized_ShowTabCounts", "ResearchOrganized_ShowTabCountsTip", ref settings.showTabProjectCounts);
-            Checkbox(listing, "ResearchOrganized_SuppressEmergenceLines", "ResearchOrganized_SuppressEmergenceLinesTip", ref settings.suppressEmergenceLines);
+            Checkbox(listing, "ResearchOrganized2_MatchUIRethemed", "ResearchOrganized2_MatchUIRethemedTip", ref settings.matchUIRethemed,
+                disabled: !ResearchSkin.Available, disabledTipKey: "ResearchOrganized2_MatchUIRethemedLockedTip");
+            Checkbox(listing, "ResearchOrganized2_FullScreen", "ResearchOrganized2_FullScreenTip", ref settings.fullScreenResearch);
+            Checkbox(listing, "ResearchOrganized2_HideUnavailable", "ResearchOrganized2_HideUnavailableTip", ref settings.hideUnavailableProjects);
+            Checkbox(listing, "ResearchOrganized2_HideFutureTechLevels", "ResearchOrganized2_HideFutureTechLevelsTip", ref settings.hideFutureTechLevels);
+            Checkbox(listing, "ResearchOrganized2_ShowTabCounts", "ResearchOrganized2_ShowTabCountsTip", ref settings.showTabProjectCounts);
+            Checkbox(listing, "ResearchOrganized2_SuppressEmergenceLines", "ResearchOrganized2_SuppressEmergenceLinesTip", ref settings.suppressEmergenceLines);
         }
 
         private void DrawTabsSection(Listing_Standard listing)
@@ -177,48 +177,48 @@ namespace ResearchOrganized
             if (combineAll)
             {
                 bool included = true;
-                Checkbox(listing, "ResearchOrganized_CombineIndustrial", "ResearchOrganized_CombineIndustrialTip", ref included, disabled: true,
-                    disabledTipKey: "ResearchOrganized_CombineIndustrialIncludedTip");
+                Checkbox(listing, "ResearchOrganized2_CombineIndustrial", "ResearchOrganized2_CombineIndustrialTip", ref included, disabled: true,
+                    disabledTipKey: "ResearchOrganized2_CombineIndustrialIncludedTip");
             }
             else
             {
-                Checkbox(listing, "ResearchOrganized_CombineIndustrial", "ResearchOrganized_CombineIndustrialTip", ref settings.combineIndustrial);
+                Checkbox(listing, "ResearchOrganized2_CombineIndustrial", "ResearchOrganized2_CombineIndustrialTip", ref settings.combineIndustrial);
             }
 
-            Checkbox(listing, "ResearchOrganized_CombineAllTabs", "ResearchOrganized_CombineAllTabsTip", ref settings.combineAllTabs);
-            Checkbox(listing, "ResearchOrganized_SeparateEras", "ResearchOrganized_SeparateErasTip", ref settings.separateEras, SubOptionIndent,
-                !combineAll, "ResearchOrganized_RequiresCombineAllTabs");
-            Checkbox(listing, "ResearchOrganized_CrossEraLines", "ResearchOrganized_CrossEraLinesTip", ref settings.crossEraLines, SubOptionIndent,
-                !combineAll, "ResearchOrganized_RequiresCombineAllTabs");
+            Checkbox(listing, "ResearchOrganized2_CombineAllTabs", "ResearchOrganized2_CombineAllTabsTip", ref settings.combineAllTabs);
+            Checkbox(listing, "ResearchOrganized2_SeparateEras", "ResearchOrganized2_SeparateErasTip", ref settings.separateEras, SubOptionIndent,
+                !combineAll, "ResearchOrganized2_RequiresCombineAllTabs");
+            Checkbox(listing, "ResearchOrganized2_CrossEraLines", "ResearchOrganized2_CrossEraLinesTip", ref settings.crossEraLines, SubOptionIndent,
+                !combineAll, "ResearchOrganized2_RequiresCombineAllTabs");
         }
 
         private void DrawColorsSection(Listing_Standard listing)
         {
 
             bool useColors = !settings.disableCustomColors;
-            Checkbox(listing, "ResearchOrganized_ColorCards", "ResearchOrganized_ColorCardsTip", ref useColors);
+            Checkbox(listing, "ResearchOrganized2_ColorCards", "ResearchOrganized2_ColorCardsTip", ref useColors);
             settings.disableCustomColors = !useColors;
 
             // With the theme on, card colors are picked on UI Rethemed - Core's settings page instead.
-            string paletteLockKey = !useColors ? "ResearchOrganized_RequiresColorCards"
-                : ResearchSkin.Active != null ? "ResearchOrganized_ColorsOnCoreTip" : null;
-            if (ResearchSkin.Active != null && useColors) SubNote(listing, "ResearchOrganized_ColorsOnCoreTip");
-            DrawColorPalette(listing, "ResearchOrganized_ColorUndefined", ref settings.colorUndefined, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized_ColorAnimal", ref settings.colorAnimal, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized_ColorNeolithic", ref settings.colorNeolithic, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized_ColorMedieval", ref settings.colorMedieval, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized_ColorIndustrial", ref settings.colorIndustrial, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized_ColorSpacer", ref settings.colorSpacer, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized_ColorUltra", ref settings.colorUltra, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized_ColorArchotech", ref settings.colorArchotech, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized_ColorAnomaly", ref settings.colorAnomaly, paletteLockKey);
+            string paletteLockKey = !useColors ? "ResearchOrganized2_RequiresColorCards"
+                : ResearchSkin.Active != null ? "ResearchOrganized2_ColorsOnCoreTip" : null;
+            if (ResearchSkin.Active != null && useColors) SubNote(listing, "ResearchOrganized2_ColorsOnCoreTip");
+            DrawColorPalette(listing, "ResearchOrganized2_ColorUndefined", ref settings.colorUndefined, paletteLockKey);
+            DrawColorPalette(listing, "ResearchOrganized2_ColorAnimal", ref settings.colorAnimal, paletteLockKey);
+            DrawColorPalette(listing, "ResearchOrganized2_ColorNeolithic", ref settings.colorNeolithic, paletteLockKey);
+            DrawColorPalette(listing, "ResearchOrganized2_ColorMedieval", ref settings.colorMedieval, paletteLockKey);
+            DrawColorPalette(listing, "ResearchOrganized2_ColorIndustrial", ref settings.colorIndustrial, paletteLockKey);
+            DrawColorPalette(listing, "ResearchOrganized2_ColorSpacer", ref settings.colorSpacer, paletteLockKey);
+            DrawColorPalette(listing, "ResearchOrganized2_ColorUltra", ref settings.colorUltra, paletteLockKey);
+            DrawColorPalette(listing, "ResearchOrganized2_ColorArchotech", ref settings.colorArchotech, paletteLockKey);
+            DrawColorPalette(listing, "ResearchOrganized2_ColorAnomaly", ref settings.colorAnomaly, paletteLockKey);
         }
 
         private void DrawLayoutSection(Listing_Standard listing)
         {
-            NumericField(listing, "ResearchOrganized_MinorAnchor", "ResearchOrganized_MinorAnchorTip", ref settings.minorAnchorChildThreshold, ref minorThresholdBuffer, 1f);
-            NumericField(listing, "ResearchOrganized_MajorAnchor", "ResearchOrganized_MajorAnchorTip", ref settings.majorAnchorChildThreshold, ref majorThresholdBuffer, 2f);
-            Checkbox(listing, "ResearchOrganized_WriteLayoutLog", "ResearchOrganized_WriteLayoutLogTip", ref settings.writeLayoutLog);
+            NumericField(listing, "ResearchOrganized2_MinorAnchor", "ResearchOrganized2_MinorAnchorTip", ref settings.minorAnchorChildThreshold, ref minorThresholdBuffer, 1f);
+            NumericField(listing, "ResearchOrganized2_MajorAnchor", "ResearchOrganized2_MajorAnchorTip", ref settings.majorAnchorChildThreshold, ref majorThresholdBuffer, 2f);
+            Checkbox(listing, "ResearchOrganized2_WriteLayoutLog", "ResearchOrganized2_WriteLayoutLogTip", ref settings.writeLayoutLog);
         }
 
         private string T(string key)

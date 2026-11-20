@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using ResearchOrganized.Layout;
+using ResearchOrganized2.Layout;
 using RimWorld;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     public static partial class ResearchOrganizedMain
     {

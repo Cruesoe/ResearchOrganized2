@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ResearchOrganized.Layout
+namespace ResearchOrganized2.Layout
 {
     /// <summary>
     /// Improves rows without changing columns, anchors, epochs, or capacity. Barycentric sweeps

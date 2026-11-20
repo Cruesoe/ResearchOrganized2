@@ -1,6 +1,6 @@
 using RimWorld;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     /// <summary>Colors every card on a tab as the given tech level.</summary>
     public class TabThemeEntry

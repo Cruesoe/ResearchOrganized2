@@ -5,7 +5,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     /// <summary>Node Research (ferny.noderesearch) parks every project its own window draws
     /// onto vanilla's Main tab, remembering where each came from so its "open the vanilla
@@ -55,7 +55,7 @@ namespace ResearchOrganized
                 }
                 isCollapsedField.SetValue(null, false);
             }
-            catch (Exception ex) { Log.Error($"[Research: Organized] Node Research sync error: {ex.Message}"); }
+            catch (Exception ex) { Log.Error($"[Research: Organized 2] Node Research sync error: {ex.Message}"); }
         }
 
         /// <summary>Postfix on Node Research's restore, run when its "open the vanilla menu"
@@ -70,7 +70,7 @@ namespace ResearchOrganized
                     if (entry.Value != null) entry.Key.tab = entry.Value;
                 }
             }
-            catch (Exception ex) { Log.Error($"[Research: Organized] Node Research restore error: {ex.Message}"); }
+            catch (Exception ex) { Log.Error($"[Research: Organized 2] Node Research restore error: {ex.Message}"); }
         }
 
         private static void Resolve()

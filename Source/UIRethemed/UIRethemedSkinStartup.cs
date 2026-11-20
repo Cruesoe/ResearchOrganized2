@@ -1,7 +1,7 @@
-using ResearchOrganized;
+using ResearchOrganized2;
 using Verse;
 
-namespace ResearchOrganizedUIRethemed
+namespace ResearchOrganized2UIRethemed
 {
     [StaticConstructorOnStartup]
     public static class UIRethemedSkinStartup

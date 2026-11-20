@@ -1,4 +1,4 @@
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     /// <summary>Per-tab layout spacing from a config def's targetTabs.</summary>
     public class LayoutConfig

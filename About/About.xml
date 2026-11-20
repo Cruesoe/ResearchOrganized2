@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>Research: Organized</name>
+  <name>Research: Organized 2</name>
   <author>Cruesoe</author>
-  <packageId>cruesoe.research.organized</packageId>
+  <packageId>cruesoe.research.organized2</packageId>
   <modVersion>261115</modVersion>
   <description>Sorts research projects into tech-level tabs and lays each tab out as a tidy, readable tree.
 
@@ -44,8 +44,14 @@ Compatibility
       <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
       <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
     </li>
+    <li>
+      <packageId>LazyFridayStudio.UIRethemed.Core</packageId>
+      <displayName>[LFS] UI Rethemed - Core</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3832843406</steamWorkshopUrl>
+    </li>
   </modDependencies>
   <incompatibleWith>
+    <li>cruesoe.research.organized</li>
     <li>GonDragon.TechTree</li>
     <li>Aelanna.ResearchTabColors</li>
     <li>zenlor.OrganizedResearchTech</li>

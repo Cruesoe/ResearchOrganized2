@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using ResearchOrganized;
+using ResearchOrganized2;
 using UIRethemed.Core;
 using UnityEngine;
 using Verse;
 
-namespace ResearchOrganizedUIRethemed
+namespace ResearchOrganized2UIRethemed
 {
-    /// <summary>Research: Organized drawn with UI Rethemed - Core. Every Core call sits in its own non-inlined method inside
+    /// <summary>Research: Organized 2 drawn with UI Rethemed - Core. Every Core call sits in its own non-inlined method inside
     /// try/catch, so a Core API change fails at JIT time into ResearchSkin.Fail and the mod's own look.</summary>
     public sealed class UIRethemedSkin : ResearchSkin
     {
-        private const string PackageId = "cruesoe.research.organized";
-        private const string SettingsPart = "ResearchOrganized.Settings";
+        private const string PackageId = "cruesoe.research.organized2";
+        private const string SettingsPart = "ResearchOrganized2.Settings";
 
         private static bool IsRepaint => Event.current.type == EventType.Repaint;
 
@@ -368,7 +368,7 @@ namespace ResearchOrganizedUIRethemed
             if (Failsafe.Failed(SettingsPart)) return false;
             if (settingsCards == null)
             {
-                settingsCards = new SettingsCards("ResearchOrganized", () => openSections);
+                settingsCards = new SettingsCards("ResearchOrganized2", () => openSections);
                 leftCards = (y, width) => DrawCards(drawingLeft, y, width);
                 rightCards = (y, width) => DrawCards(drawingRight, y, width);
                 drawSettings = DrawSettings;

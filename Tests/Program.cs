@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using ResearchOrganized.Layout;
+using ResearchOrganized2.Layout;
 
-namespace ResearchOrganized.Tests
+namespace ResearchOrganized2.Tests
 {
     /// <summary>
     /// Assertions over the layout core. No test framework on purpose: a plain console exe

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ResearchOrganized.Layout
+namespace ResearchOrganized2.Layout
 {
     public sealed class LayoutOptions
     {

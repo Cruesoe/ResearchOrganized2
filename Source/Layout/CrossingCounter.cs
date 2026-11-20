@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ResearchOrganized.Layout
+namespace ResearchOrganized2.Layout
 {
     /// <summary>
     /// Counts unique pairs of rendered prerequisite connectors that intersect. The research

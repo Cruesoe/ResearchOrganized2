@@ -4,7 +4,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace ResearchOrganized
+namespace ResearchOrganized2
 {
     /// <summary>
     /// "Hide Unavailable Projects" hides unfinished projects that cannot be started now; "Hide Future Tech Levels"
@@ -19,7 +19,7 @@ namespace ResearchOrganized
             var getter = AccessTools.PropertyGetter(typeof(MainTabWindow_Research), nameof(MainTabWindow_Research.VisibleResearchProjects));
             if (getter == null || visibleCacheField == null)
             {
-                Log.Warning("[Research: Organized] Research window visibility list not found; Hide Unavailable Projects is inactive.");
+                Log.Warning("[Research: Organized 2] Research window visibility list not found; Hide Unavailable Projects is inactive.");
                 return;
             }
             harmony.Patch(getter,
