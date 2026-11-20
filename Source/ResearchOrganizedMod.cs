@@ -49,6 +49,9 @@ namespace ResearchOrganized2
 
         public override string SettingsCategory() => "Research: Organized 2";
 
+        /// <summary>Saves a setting changed from the research window and applies it at once, as closing the settings page does.</summary>
+        public static void SaveAndApply() => Instance.WriteSettings();
+
         /// <summary>Saves, refreshes colors and the visibility filter, and rebuilds the layout when a structural setting changed.</summary>
         public override void WriteSettings()
         {
@@ -181,7 +184,7 @@ namespace ResearchOrganized2
                 options.Add(new FloatMenuOption(CardSizeLabel(size), () =>
                 {
                     settings.cardSize = size;
-                    settings.Write();
+                    SaveAndApply();
                 }));
             }
             Find.WindowStack.Add(new FloatMenu(options));

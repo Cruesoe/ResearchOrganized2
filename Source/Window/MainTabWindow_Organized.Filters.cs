@@ -126,7 +126,7 @@ namespace ResearchOrganized2
         private void SetFilter(ref bool hidden)
         {
             hidden = !hidden;
-            ResearchOrganizedMod.settings.Write();
+            ResearchOrganizedMod.SaveAndApply();
         }
     }
 }
