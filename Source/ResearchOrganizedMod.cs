@@ -11,18 +11,12 @@ namespace ResearchOrganized2
         /// <summary>This mod, for UI Rethemed - Core to look up its palette.</summary>
         public static ResearchOrganizedMod Instance;
 
-        private static readonly Color[] Palette = new Color[]
-        {
-            new Color(0.40f, 0.00f, 0.00f), new Color(0.80f, 0.30f, 0.30f), new Color(0.80f, 0.50f, 0.10f), new Color(0.45f, 0.33f, 0.24f),
-            new Color(0.80f, 0.80f, 0.10f), new Color(0.40f, 0.40f, 0.00f), new Color(0.00f, 0.40f, 0.00f), new Color(0.30f, 0.70f, 0.30f),
-            new Color(0.00f, 0.40f, 0.40f), new Color(0.30f, 0.80f, 0.80f), new Color(0.00f, 0.00f, 0.40f), new Color(0.30f, 0.30f, 0.80f),
-            new Color(0.30f, 0.00f, 0.30f), new Color(0.60f, 0.30f, 0.60f), new Color(0.30f, 0.30f, 0.30f), new Color(0.60f, 0.60f, 0.60f)
-        };
+        /// <summary>Counts up on every settings save, so the research window knows to rebuild what depends on them.</summary>
+        public static int SettingsVersion { get; private set; }
 
         private const float RowHeight = 24f;
         private const float ColumnGap = 24f;
         private const float SubOptionIndent = 24f;
-        private const float ColorLabelWidth = 120f;
         private const float ResetButtonHeight = 32f;
 
         /// <summary>Values the layout was actually built with, so we know when to redo it.</summary>
@@ -31,6 +25,7 @@ namespace ResearchOrganized2
         private bool appliedSeparateEras;
         private int appliedMinorAnchorThreshold;
         private int appliedMajorAnchorThreshold;
+        private int appliedMaxPerColumn;
         private bool appliedWriteLayoutLog;
 
         private string minorThresholdBuffer;
@@ -48,12 +43,16 @@ namespace ResearchOrganized2
             appliedSeparateEras = settings.separateEras;
             appliedMinorAnchorThreshold = settings.minorAnchorChildThreshold;
             appliedMajorAnchorThreshold = settings.majorAnchorChildThreshold;
+            appliedMaxPerColumn = settings.maxPerColumn;
             appliedWriteLayoutLog = settings.writeLayoutLog;
             minorThresholdBuffer = settings.minorAnchorChildThreshold.ToString();
             majorThresholdBuffer = settings.majorAnchorChildThreshold.ToString();
         }
 
         public override string SettingsCategory() => "Research: Organized 2";
+
+        /// <summary>Saves a setting changed from the research window and applies it at once, as closing the settings page does.</summary>
+        public static void SaveAndApply() => Instance.WriteSettings();
 
         /// <summary>Saves, refreshes colors and the visibility filter, and rebuilds the layout when a structural setting changed.</summary>
         public override void WriteSettings()
@@ -63,9 +62,11 @@ namespace ResearchOrganized2
                                  || settings.separateEras != appliedSeparateEras
                                  || settings.minorAnchorChildThreshold != appliedMinorAnchorThreshold
                                  || settings.majorAnchorChildThreshold != appliedMajorAnchorThreshold
+                                 || settings.maxPerColumn != appliedMaxPerColumn
                                  || (settings.writeLayoutLog && !appliedWriteLayoutLog);
 
             base.WriteSettings();
+            SettingsVersion++;
             ResearchOrganizedMain.RefreshColors();
             UnavailableProjectFilter.Invalidate();
 
@@ -76,6 +77,7 @@ namespace ResearchOrganized2
                 appliedSeparateEras = settings.separateEras;
                 appliedMinorAnchorThreshold = settings.minorAnchorChildThreshold;
                 appliedMajorAnchorThreshold = settings.majorAnchorChildThreshold;
+                appliedMaxPerColumn = settings.maxPerColumn;
                 ResearchOrganizedMain.OrganizeTabsAndLayout();
             }
             appliedWriteLayoutLog = settings.writeLayoutLog;
@@ -95,6 +97,7 @@ namespace ResearchOrganized2
             };
             rightSections = new List<SkinSettingsSection>
             {
+                new SkinSettingsSection("Cards", T("ResearchOrganized2_SectionCards"), DrawCardsSection),
                 new SkinSettingsSection("Colors", T("ResearchOrganized2_SectionColors"), DrawColorsSection),
                 new SkinSettingsSection("Layout", T("ResearchOrganized2_SectionLayout"), DrawLayoutSection)
             };
@@ -160,14 +163,56 @@ namespace ResearchOrganized2
 
         private void DrawResearchWindowSection(Listing_Standard listing)
         {
-            // Only with UI Rethemed - Core, which loads the add-on that supplies the look.
-            Checkbox(listing, "ResearchOrganized2_MatchUIRethemed", "ResearchOrganized2_MatchUIRethemedTip", ref settings.matchUIRethemed,
-                disabled: !ResearchSkin.Available, disabledTipKey: "ResearchOrganized2_MatchUIRethemedLockedTip");
             Checkbox(listing, "ResearchOrganized2_FullScreen", "ResearchOrganized2_FullScreenTip", ref settings.fullScreenResearch);
-            Checkbox(listing, "ResearchOrganized2_HideUnavailable", "ResearchOrganized2_HideUnavailableTip", ref settings.hideUnavailableProjects);
-            Checkbox(listing, "ResearchOrganized2_HideFutureTechLevels", "ResearchOrganized2_HideFutureTechLevelsTip", ref settings.hideFutureTechLevels);
+            Checkbox(listing, "ResearchOrganized2_OpenOnCurrent", "ResearchOrganized2_OpenOnCurrentTip", ref settings.openOnCurrentProject);
             Checkbox(listing, "ResearchOrganized2_ShowTabCounts", "ResearchOrganized2_ShowTabCountsTip", ref settings.showTabProjectCounts);
+            Checkbox(listing, "ResearchOrganized2_CurvedLines", "ResearchOrganized2_CurvedLinesTip", ref settings.curvedLines);
+            Checkbox(listing, "ResearchOrganized2_HighlightChain", "ResearchOrganized2_HighlightChainTip", ref settings.highlightChain);
+            Checkbox(listing, "ResearchOrganized2_EraBands", "ResearchOrganized2_EraBandsTip", ref settings.eraBands);
+            Checkbox(listing, "ResearchOrganized2_ShowTimeLeft", "ResearchOrganized2_ShowTimeLeftTip", ref settings.showTimeLeft);
             Checkbox(listing, "ResearchOrganized2_SuppressEmergenceLines", "ResearchOrganized2_SuppressEmergenceLinesTip", ref settings.suppressEmergenceLines);
+        }
+
+        /// <summary>Labels of the card sizes, smallest first, as the setting stores them.</summary>
+        internal static readonly string[] CardSizeKeys = { "ResearchOrganized2_CardSizeCompact", "ResearchOrganized2_CardSizeNormal", "ResearchOrganized2_CardSizeLarge" };
+
+        internal static string CardSizeLabel(int size) => TranslationCache.Get(CardSizeKeys[Mathf.Clamp(size, 0, CardSizeKeys.Length - 1)]);
+
+        /// <summary>Opens a menu of the card sizes; picking one saves it at once.</summary>
+        internal static void ChooseCardSize()
+        {
+            var options = new List<FloatMenuOption>();
+            for (int i = 0; i < CardSizeKeys.Length; i++)
+            {
+                int size = i;
+                options.Add(new FloatMenuOption(CardSizeLabel(size), () =>
+                {
+                    settings.cardSize = size;
+                    SaveAndApply();
+                }));
+            }
+            Find.WindowStack.Add(new FloatMenu(options));
+        }
+
+        private void DrawCardsSection(Listing_Standard listing)
+        {
+            Rect row = listing.GetRect(RowHeight + 4f);
+            Rect button = new Rect(row.xMax - 120f, row.y, 120f, row.height);
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Widgets.Label(new Rect(row.x, row.y, row.width - 128f, row.height), T("ResearchOrganized2_CardSize"));
+            Text.Anchor = TextAnchor.UpperLeft;
+            string sizeLabel = CardSizeLabel(settings.cardSize);
+            var skin = ResearchSkin.Active;
+            bool clicked = skin != null && skin.Button(button, sizeLabel, SkinTone.Gray, true) ? Widgets.ButtonInvisible(button) : Widgets.ButtonText(button, sizeLabel);
+            if (clicked) ChooseCardSize();
+            TooltipHandler.TipRegion(row, T("ResearchOrganized2_CardSizeTip"));
+            listing.Gap(listing.verticalSpacing);
+            Slider(listing, "ResearchOrganized2_ColumnSpacing", "ResearchOrganized2_ColumnSpacingTip", ref settings.columnSpacing, 0.5f, 3f, 0.05f, 1f, PercentText);
+            Slider(listing, "ResearchOrganized2_RowSpacing", "ResearchOrganized2_RowSpacingTip", ref settings.rowSpacing, 0.5f, 3f, 0.05f, 1f, PercentText);
+            Checkbox(listing, "ResearchOrganized2_CardUnlockIcons", "ResearchOrganized2_CardUnlockIconsTip", ref settings.cardUnlockIcons);
+            Checkbox(listing, "ResearchOrganized2_CardChips", "ResearchOrganized2_CardChipsTip", ref settings.cardChips);
+            Checkbox(listing, "ResearchOrganized2_CardProgressStrip", "ResearchOrganized2_CardProgressStripTip", ref settings.cardProgressStrip);
+            Checkbox(listing, "ResearchOrganized2_CardHoverCard", "ResearchOrganized2_CardHoverCardTip", ref settings.cardHoverCard);
         }
 
         private void DrawTabsSection(Listing_Standard listing)
@@ -199,25 +244,16 @@ namespace ResearchOrganized2
             Checkbox(listing, "ResearchOrganized2_ColorCards", "ResearchOrganized2_ColorCardsTip", ref useColors);
             settings.disableCustomColors = !useColors;
 
-            // With the theme on, card colors are picked on UI Rethemed - Core's settings page instead.
-            string paletteLockKey = !useColors ? "ResearchOrganized2_RequiresColorCards"
-                : ResearchSkin.Active != null ? "ResearchOrganized2_ColorsOnCoreTip" : null;
-            if (ResearchSkin.Active != null && useColors) SubNote(listing, "ResearchOrganized2_ColorsOnCoreTip");
-            DrawColorPalette(listing, "ResearchOrganized2_ColorUndefined", ref settings.colorUndefined, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorAnimal", ref settings.colorAnimal, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorNeolithic", ref settings.colorNeolithic, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorMedieval", ref settings.colorMedieval, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorIndustrial", ref settings.colorIndustrial, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorSpacer", ref settings.colorSpacer, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorUltra", ref settings.colorUltra, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorArchotech", ref settings.colorArchotech, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorAnomaly", ref settings.colorAnomaly, paletteLockKey);
+            if (useColors) SubNote(listing, "ResearchOrganized2_ColorsOnCoreTip");
         }
 
         private void DrawLayoutSection(Listing_Standard listing)
         {
             NumericField(listing, "ResearchOrganized2_MinorAnchor", "ResearchOrganized2_MinorAnchorTip", ref settings.minorAnchorChildThreshold, ref minorThresholdBuffer, 1f);
             NumericField(listing, "ResearchOrganized2_MajorAnchor", "ResearchOrganized2_MajorAnchorTip", ref settings.majorAnchorChildThreshold, ref majorThresholdBuffer, 2f);
+            float perColumn = settings.maxPerColumn;
+            Slider(listing, "ResearchOrganized2_MaxPerColumn", "ResearchOrganized2_MaxPerColumnTip", ref perColumn, 6f, 30f, 1f, 16f, WholeText);
+            settings.maxPerColumn = Mathf.RoundToInt(perColumn);
             Checkbox(listing, "ResearchOrganized2_WriteLayoutLog", "ResearchOrganized2_WriteLayoutLogTip", ref settings.writeLayoutLog);
         }
 
@@ -253,6 +289,28 @@ namespace ResearchOrganized2
             listing.Gap(listing.verticalSpacing);
         }
 
+        private static readonly Dictionary<int, string> numberTexts = new Dictionary<int, string>();
+        private static readonly System.Func<float, string> PercentText = value => CachedNumber(Mathf.RoundToInt(value * 100f), "%");
+        private static readonly System.Func<float, string> WholeText = value => CachedNumber(Mathf.RoundToInt(value), "");
+
+        private static string CachedNumber(int value, string suffix)
+        {
+            int key = suffix.Length > 0 ? value + 100000 : value;
+            if (!numberTexts.TryGetValue(key, out string text)) numberTexts[key] = text = value + suffix;
+            return text;
+        }
+
+        /// <summary>Core's slider row with a reset button that appears once the value is changed from <paramref name="usual"/>.</summary>
+        private void Slider(Listing_Standard listing, string key, string tipKey, ref float value, float min, float max, float step, float usual, System.Func<float, string> text)
+        {
+            value = UIRethemed.Core.SettingsCards.SliderLine(listing, T(key), T(tipKey), value, min, max, step, text, out Rect reset);
+            if (Mathf.Abs(value - usual) > step * 0.01f
+                && UIRethemed.Core.CoreWidgets.IconButton(reset, UIRethemed.Core.CoreWidgets.ResetTex, T("ResearchOrganized2_ResetValue"), null, false, null, true, 14f))
+            {
+                value = usual;
+            }
+        }
+
         /// <summary>A dimmed line of explanation under a section's first row.</summary>
         private void SubNote(Listing_Standard listing, string key)
         {
@@ -271,42 +329,5 @@ namespace ResearchOrganized2
             listing.Gap(listing.verticalSpacing);
         }
 
-        /// <summary>A row of color swatches; with <paramref name="lockedTipKey"/> it is greyed and inert, with that key as its tooltip.</summary>
-        private void DrawColorPalette(Listing_Standard listing, string key, ref Color selectedColor, string lockedTipKey)
-        {
-            Rect rect = listing.GetRect(RowHeight);
-            bool enabled = lockedTipKey == null;
-            if (!enabled)
-            {
-                GUI.color = Color.gray;
-                TooltipHandler.TipRegion(rect, T(lockedTipKey));
-            }
-            Widgets.Label(new Rect(rect.x, rect.y + 2f, ColorLabelWidth, rect.height - 2f), T(key));
-
-            // Swatches share the space right of the label, up to 24 pixels apart.
-            float step = Mathf.Min(24f, (rect.width - ColorLabelWidth) / Palette.Length);
-            float size = Mathf.Min(step - 2f, rect.height - 2f);
-            float curX = rect.x + ColorLabelWidth;
-            foreach (Color color in Palette)
-            {
-                Rect swatchRect = new Rect(curX, rect.y + (rect.height - size) / 2f, size, size);
-                Widgets.DrawBoxSolid(swatchRect, enabled ? color : Color.Lerp(color, Color.gray, 0.6f));
-
-                if (ColorsMatch(color, selectedColor)) Widgets.DrawBox(swatchRect, 2);
-
-                if (enabled && Widgets.ButtonInvisible(swatchRect)) selectedColor = color;
-
-                curX += step;
-            }
-            GUI.color = Color.white;
-            listing.Gap(2f);
-        }
-
-        private static bool ColorsMatch(Color a, Color b)
-        {
-            return Mathf.Abs(a.r - b.r) < 0.01f &&
-                   Mathf.Abs(a.g - b.g) < 0.01f &&
-                   Mathf.Abs(a.b - b.b) < 0.01f;
-        }
     }
 }

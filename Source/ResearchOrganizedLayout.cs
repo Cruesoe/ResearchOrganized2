@@ -280,9 +280,8 @@ namespace ResearchOrganized2
                 extraWidth = Math.Max(extraWidth, ResearchIconsCompat.CardWidth(project) - ResearchIconsCompat.VanillaCardWidth);
             options.xStep += extraWidth / PixelsPerX;
 
-            // Full screen fits more projects into each column when its tree is taller.
-            int fullScreenRows = ResearchOrganizedMain.FullScreenRows(options.yStep);
-            if (options.maxNodesPerColumn > 0 && fullScreenRows > options.maxNodesPerColumn) options.maxNodesPerColumn = fullScreenRows;
+            // The player's projects-per-column setting replaces every tab's own limit.
+            if (options.maxNodesPerColumn > 0) options.maxNodesPerColumn = Math.Max(1, ResearchOrganizedMod.settings.maxPerColumn);
 
             return options;
         }

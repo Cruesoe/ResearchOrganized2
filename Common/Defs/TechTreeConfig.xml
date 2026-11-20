@@ -6,7 +6,7 @@
 
     <xStep>1.0</xStep>
     <yStep>0.63</yStep>
-    <maxNodesPerColumn>10</maxNodesPerColumn>
+    <maxNodesPerColumn>16</maxNodesPerColumn>
 
     <ignoredTabs>
       <li>TabAnimal</li>

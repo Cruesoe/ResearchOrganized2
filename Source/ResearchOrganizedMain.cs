@@ -31,7 +31,7 @@ namespace ResearchOrganized2
 
         public static float GlobalXStep = 1f;
         public static float GlobalYStep = 0.63f;
-        public static int GlobalMaxNodesPerColumn = 12;
+        public static int GlobalMaxNodesPerColumn = 16;
 
         static ResearchOrganizedMain()
         {
@@ -121,12 +121,30 @@ namespace ResearchOrganized2
             }
 
             UnavailableProjectFilter.Patch(harmony);
+            ResearchRate.Patch(harmony);
+            ProjectQueue.Patch(harmony);
 
             // The UI Rethemed look for the rest of the research window, used only while Match UI Rethemed Theme is on.
             ResearchWindowTheme.Patch(harmony);
 
             OrganizeTabsAndLayout();
+
+            WindowHandover.Patch(harmony);
+
+            // The Research button opens this mod's window, unless Node Research has taken it or Semi Random Research decides.
+            var researchButton = MainButtonDefOf.Research;
+            if (researchButton != null && !WindowHandover.NodeResearchActive && !WindowHandover.SemiRandomActive)
+            {
+                researchButton.tabWindowClass = typeof(MainTabWindow_Organized);
+                researchButtonWindowRef(researchButton) = null;
+            }
         }
+
+        private static readonly AccessTools.FieldRef<MainButtonDef, MainTabWindow> researchButtonWindowRef =
+            AccessTools.FieldRefAccess<MainButtonDef, MainTabWindow>("tabWindowInt");
+
+        /// <summary>Counts up after every layout pass, so the research window knows to re-read project positions.</summary>
+        public static int LayoutVersion { get; private set; }
 
         private static void OnGameFinalizeInit()
         {
@@ -185,6 +203,8 @@ namespace ResearchOrganized2
                 // Copies researchViewX/Y into the private x/y the window draws from; its overlap nudge
                 // only touches cards closer than this layout ever places them.
                 ResearchProjectDef.GenerateNonOverlappingCoordinates();
+
+                LayoutVersion++;
 
                 // Tells Node Research where its parked projects went, so its window re-collapses them.
                 NodeResearchCompat.SyncTabs();
