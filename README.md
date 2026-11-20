@@ -5,7 +5,7 @@ Sorts research projects into tech-level tabs and lays each tab out as a tidy, re
 ## Features
 
 - A research window of its own, in UI Rethemed's look: drag to pan and use the mouse wheel to zoom, with a Fit button, and each tab remembers its view.
-- Cards show their era's color and their state at a glance (finished, available, being researched, locked), with up to three unlock icons, techprint and study counters, a progress strip and a hover card listing everything the project needs and unlocks.
+- Cards show their era's color and their state at a glance (finished, available, being researched, locked), with up to three unlock icons, techprint and study counters, a progress strip and a hover card listing what the project needs and what it unlocks without further research.
 - Lines between projects are smooth curves, and selecting a project lights up its whole prerequisite chain.
 - A foldable details panel shows the selected project's requirements, unlocks and the Research button; a bar along the bottom shows the current project's progress.
 - Search finds projects by name or by anything they unlock, and chips in the window show or hide locked, finished and future-era projects.

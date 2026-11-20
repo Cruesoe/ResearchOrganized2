@@ -17,6 +17,7 @@ namespace ResearchOrganized2
             public string label;
             public string cost;
             public string hoverBody;
+            public int hoverVersion = -1;
             public readonly List<Def> icons = new List<Def>();
         }
 
@@ -49,9 +50,44 @@ namespace ResearchOrganized2
                 if (unlocked[i] is BuildableDef || unlocked[i] is RecipeDef recipe && recipe.ProducedThingDef != null)
                     info.icons.Add(unlocked[i]);
             }
-            info.hoverBody = HoverBody(project);
             cardInfo[project] = info;
             return info;
+        }
+
+        /// <summary>The hover card's text, rebuilt when research progress or completion may have changed what the project unlocks now.</summary>
+        private static string HoverText(ResearchProjectDef project, CardInfo info)
+        {
+            int version = ResearchOrganizedMain.StatsVersion;
+            if (info.hoverBody == null || info.hoverVersion != version)
+            {
+                info.hoverBody = HoverBody(project);
+                info.hoverVersion = version;
+            }
+            return info.hoverBody;
+        }
+
+        /// <summary>Every project that lists each def among its unlocks. Lifetime: the session, since defs don't change.</summary>
+        private static Dictionary<Def, List<ResearchProjectDef>> unlockedBy;
+
+        /// <summary>A def counts as unlocked by the project now when every other project that also unlocks it is finished.</summary>
+        private static bool UnlocksNow(ResearchProjectDef project, Def def)
+        {
+            if (unlockedBy == null)
+            {
+                unlockedBy = new Dictionary<Def, List<ResearchProjectDef>>();
+                foreach (var other in DefDatabase<ResearchProjectDef>.AllDefsListForReading)
+                {
+                    foreach (var unlocked in other.UnlockedDefs)
+                    {
+                        if (!unlockedBy.TryGetValue(unlocked, out var list)) unlockedBy[unlocked] = list = new List<ResearchProjectDef>();
+                        list.Add(other);
+                    }
+                }
+            }
+            if (!unlockedBy.TryGetValue(def, out var projects)) return true;
+            for (int i = 0; i < projects.Count; i++)
+                if (projects[i] != project && !projects[i].IsFinished) return false;
+            return true;
         }
 
         private static string HoverBody(ResearchProjectDef project)
@@ -69,15 +105,15 @@ namespace ResearchOrganized2
                 }
                 text.AppendLine();
             }
+            // Only what this project unlocks on its own once finished; things that also need unfinished research are left out.
             var unlocked = project.UnlockedDefs;
-            if (unlocked.Count > 0)
+            bool any = false;
+            for (int i = 0; i < unlocked.Count; i++)
             {
-                text.Append("ResearchOrganized2_HoverUnlocks".Translate()).Append(' ');
-                for (int i = 0; i < unlocked.Count; i++)
-                {
-                    if (i > 0) text.Append(", ");
-                    text.Append(unlocked[i].LabelCap);
-                }
+                if (!UnlocksNow(project, unlocked[i])) continue;
+                text.Append(any ? ", " : "ResearchOrganized2_HoverUnlocks".Translate() + " ");
+                text.Append(unlocked[i].LabelCap);
+                any = true;
             }
             return text.ToString().TrimEnd();
         }
@@ -177,7 +213,7 @@ namespace ResearchOrganized2
             if (zoom >= 0.6f) DrawCardText(project, info, card, zoom, finished, current, locked, hidden, alpha, settings);
 
             if (settings.cardHoverCard && !hidden && Mouse.IsOver(card))
-                CoreWidgets.Tip(card, info.label, info.hoverBody, null, era);
+                CoreWidgets.Tip(card, info.label, HoverText(project, info), null, era);
         }
 
         private void DrawCardText(ResearchProjectDef project, CardInfo info, Rect card, float zoom, bool finished, bool current, bool locked,

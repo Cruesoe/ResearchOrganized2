@@ -5,7 +5,7 @@ In some cases the result is not strictly linear, but I believe it makes the tree
 [h2]Research window[/h2]
 [list]
 [*]Drag to pan, use the mouse wheel to zoom, and press Fit to see the whole tab. Each tab remembers its view.
-[*]Cards show their era's color and their state at a glance (finished, available, being researched, locked), with up to three unlock icons, techprint and study counters, a progress strip and a hover card listing everything the project needs and unlocks.
+[*]Cards show their era's color and their state at a glance (finished, available, being researched, locked), with up to three unlock icons, techprint and study counters, a progress strip and a hover card listing what the project needs and what it unlocks without further research.
 [*]Cards come in Compact, Normal and Large sizes.
 [*]Lines between projects are smooth curves, and selecting a project lights up its whole prerequisite chain.
 [*]Era bands tint each era's columns and name it along the top, on tabs laid out era by era.

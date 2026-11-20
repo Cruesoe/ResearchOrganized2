@@ -90,5 +90,5 @@
   <ResearchOrganized2_OpenNodeResearch>Open Node Research</ResearchOrganized2_OpenNodeResearch>
   <ResearchOrganized2_OpenSemiRandom>Open Semi Random Research</ResearchOrganized2_OpenSemiRandom>
   <ResearchOrganized2_OpenResearchQueue>Open Research Queue</ResearchOrganized2_OpenResearchQueue>
-  <ResearchOrganized2_CardHoverCardTip>Shows a card with the project's description, cost, prerequisites and everything it unlocks when you hover over it.</ResearchOrganized2_CardHoverCardTip>
+  <ResearchOrganized2_CardHoverCardTip>Shows a card with the project's description, cost, prerequisites and what it unlocks without further research when you hover over it.</ResearchOrganized2_CardHoverCardTip>
 </LanguageData>
