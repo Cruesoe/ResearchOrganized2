@@ -10,10 +10,6 @@
 
   <!-- Settings -->
   <ResearchOrganized2_SectionResearchWindow>Research Window</ResearchOrganized2_SectionResearchWindow>
-  <ResearchOrganized2_HideUnavailable>Hide Unavailable Projects</ResearchOrganized2_HideUnavailable>
-  <ResearchOrganized2_HideUnavailableTip>Shows only finished projects and projects that can be started now. Projects missing a prerequisite, techprint, research bench or other requirement are hidden until they become available.</ResearchOrganized2_HideUnavailableTip>
-  <ResearchOrganized2_HideFutureTechLevels>Hide Future Tech Levels</ResearchOrganized2_HideFutureTechLevels>
-  <ResearchOrganized2_HideFutureTechLevelsTip>Hides unfinished projects above your colony's tech level. Your tech level comes from your starting faction, and rises as Node Research's emergence projects are completed.</ResearchOrganized2_HideFutureTechLevelsTip>
   <ResearchOrganized2_FullScreen>Full Screen Research Window</ResearchOrganized2_FullScreen>
   <ResearchOrganized2_FullScreenTip>Makes the research window as tall as the screen allows and fits as many projects into each column as that height holds. The button beside the settings gear in the research window toggles this too.</ResearchOrganized2_FullScreenTip>
   <ResearchOrganized2_ShowTabCounts>Show Tab Project Counts</ResearchOrganized2_ShowTabCounts>
@@ -35,21 +31,8 @@
 
   <ResearchOrganized2_SectionColors>Colors</ResearchOrganized2_SectionColors>
   <ResearchOrganized2_ColorCards>Color Cards by Tech Level</ResearchOrganized2_ColorCards>
-  <ResearchOrganized2_ColorCardsTip>Tints each finished project card with its tech level's color. Turn off for vanilla colors.</ResearchOrganized2_ColorCardsTip>
-  <ResearchOrganized2_RequiresColorCards>Requires Color Cards by Tech Level.</ResearchOrganized2_RequiresColorCards>
-  <ResearchOrganized2_ColorsOnCoreTip>While Match UI Rethemed Theme is on, each era's color is picked on UI Rethemed - Core's settings page.</ResearchOrganized2_ColorsOnCoreTip>
-  <ResearchOrganized2_MatchUIRethemed>Match UI Rethemed Theme</ResearchOrganized2_MatchUIRethemed>
-  <ResearchOrganized2_MatchUIRethemedTip>Gives the research window and this settings page UI Rethemed's look: its window background, tabs, panels, rounded project cards, buttons, progress bar and line colors, and its settings cards. Era colors are then picked on UI Rethemed - Core's settings page.</ResearchOrganized2_MatchUIRethemedTip>
-  <ResearchOrganized2_MatchUIRethemedLockedTip>Needs UI Rethemed - Core.</ResearchOrganized2_MatchUIRethemedLockedTip>
-  <ResearchOrganized2_ColorUndefined>Undefined / Misc</ResearchOrganized2_ColorUndefined>
-  <ResearchOrganized2_ColorAnimal>Animal / Primitive</ResearchOrganized2_ColorAnimal>
-  <ResearchOrganized2_ColorNeolithic>Neolithic</ResearchOrganized2_ColorNeolithic>
-  <ResearchOrganized2_ColorMedieval>Medieval</ResearchOrganized2_ColorMedieval>
-  <ResearchOrganized2_ColorIndustrial>Industrial</ResearchOrganized2_ColorIndustrial>
-  <ResearchOrganized2_ColorSpacer>Spacer</ResearchOrganized2_ColorSpacer>
-  <ResearchOrganized2_ColorUltra>Ultra</ResearchOrganized2_ColorUltra>
-  <ResearchOrganized2_ColorArchotech>Archotech</ResearchOrganized2_ColorArchotech>
-  <ResearchOrganized2_ColorAnomaly>Anomaly</ResearchOrganized2_ColorAnomaly>
+  <ResearchOrganized2_ColorCardsTip>Tints each project card with its tech level's color. Turn off for plain gray cards.</ResearchOrganized2_ColorCardsTip>
+  <ResearchOrganized2_ColorsOnCoreTip>Each era's color is picked on UI Rethemed - Core's settings page.</ResearchOrganized2_ColorsOnCoreTip>
 
   <ResearchOrganized2_SectionLayout>Layout</ResearchOrganized2_SectionLayout>
   <ResearchOrganized2_MinorAnchor>Follow-ups for a minor hub:</ResearchOrganized2_MinorAnchor>
@@ -60,4 +43,38 @@
   <ResearchOrganized2_WriteLayoutLogTip>Writes every project's column, row and hub type, and each hub's placement decisions, to Player.log whenever the layout is built.</ResearchOrganized2_WriteLayoutLogTip>
   <ResearchOrganized2_ResetDefaults>Reset to Defaults</ResearchOrganized2_ResetDefaults>
 
+  <!-- Research window: title bar, filters, canvas, cards and panels -->
+  <ResearchOrganized2_TitleCounts>{0} / {1} projects researched</ResearchOrganized2_TitleCounts>
+  <ResearchOrganized2_SearchHint>Search projects and unlocks</ResearchOrganized2_SearchHint>
+  <ResearchOrganized2_FilterLocked>Locked</ResearchOrganized2_FilterLocked>
+  <ResearchOrganized2_FilterLockedTip>Shows projects that can't be started yet: missing a prerequisite, techprint, research bench or other requirement. Click to show or hide them.</ResearchOrganized2_FilterLockedTip>
+  <ResearchOrganized2_FilterFinished>Finished</ResearchOrganized2_FilterFinished>
+  <ResearchOrganized2_FilterFinishedTip>Shows projects you have already researched. Click to show or hide them.</ResearchOrganized2_FilterFinishedTip>
+  <ResearchOrganized2_FilterFuture>Future eras</ResearchOrganized2_FilterFuture>
+  <ResearchOrganized2_FilterFutureTip>Shows unfinished projects above your colony's tech level. Your tech level comes from your starting faction, and rises as Node Research's emergence projects are completed. Click to show or hide them.</ResearchOrganized2_FilterFutureTip>
+  <ResearchOrganized2_FitTip>Fit the whole tab in view</ResearchOrganized2_FitTip>
+  <ResearchOrganized2_ZoomInTip>Zoom in (or use the mouse wheel)</ResearchOrganized2_ZoomInTip>
+  <ResearchOrganized2_ZoomOutTip>Zoom out (or use the mouse wheel)</ResearchOrganized2_ZoomOutTip>
+  <ResearchOrganized2_Details>Details</ResearchOrganized2_Details>
+  <ResearchOrganized2_UnknownProject>(Unknown)</ResearchOrganized2_UnknownProject>
+  <ResearchOrganized2_HoverCost>Cost: {0}</ResearchOrganized2_HoverCost>
+  <ResearchOrganized2_HoverNeeds>Needs:</ResearchOrganized2_HoverNeeds>
+  <ResearchOrganized2_HoverUnlocks>Unlocks:</ResearchOrganized2_HoverUnlocks>
+
+  <!-- Settings: research window and cards -->
+  <ResearchOrganized2_OpenOnCurrent>Open on the Current Project</ResearchOrganized2_OpenOnCurrent>
+  <ResearchOrganized2_OpenOnCurrentTip>Brings the project being researched into view every time the window opens. When off, each tab stays where you left it.</ResearchOrganized2_OpenOnCurrentTip>
+  <ResearchOrganized2_CurvedLines>Curved Lines</ResearchOrganized2_CurvedLines>
+  <ResearchOrganized2_CurvedLinesTip>Draws the lines between projects as smooth curves. When off, they are straight.</ResearchOrganized2_CurvedLinesTip>
+  <ResearchOrganized2_HighlightChain>Highlight Whole Prerequisite Chain</ResearchOrganized2_HighlightChain>
+  <ResearchOrganized2_HighlightChainTip>Lights up every project the selected one needs, all the way back, not only its direct prerequisites.</ResearchOrganized2_HighlightChainTip>
+  <ResearchOrganized2_SectionCards>Cards</ResearchOrganized2_SectionCards>
+  <ResearchOrganized2_CardUnlockIcons>Unlock Icons</ResearchOrganized2_CardUnlockIcons>
+  <ResearchOrganized2_CardUnlockIconsTip>Shows up to three icons on each card for the buildings and items it unlocks.</ResearchOrganized2_CardUnlockIconsTip>
+  <ResearchOrganized2_CardChips>Techprint and Study Counters</ResearchOrganized2_CardChips>
+  <ResearchOrganized2_CardChipsTip>Shows techprints applied and things studied on cards that need them, in red until the requirement is met.</ResearchOrganized2_CardChipsTip>
+  <ResearchOrganized2_CardProgressStrip>Progress Strip</ResearchOrganized2_CardProgressStrip>
+  <ResearchOrganized2_CardProgressStripTip>Shows a thin progress bar along the bottom of cards that have progress.</ResearchOrganized2_CardProgressStripTip>
+  <ResearchOrganized2_CardHoverCard>Hover Card</ResearchOrganized2_CardHoverCard>
+  <ResearchOrganized2_CardHoverCardTip>Shows a card with the project's description, cost, prerequisites and everything it unlocks when you hover over it.</ResearchOrganized2_CardHoverCardTip>
 </LanguageData>

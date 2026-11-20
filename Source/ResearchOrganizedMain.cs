@@ -126,7 +126,23 @@ namespace ResearchOrganized2
             ResearchWindowTheme.Patch(harmony);
 
             OrganizeTabsAndLayout();
+
+            // The Research button opens this mod's window, unless Node Research has taken the button for its own.
+            var researchButton = MainButtonDefOf.Research;
+            if (researchButton != null && !ModsConfig.IsActive(NodeResearchPackageId))
+            {
+                researchButton.tabWindowClass = typeof(MainTabWindow_Organized);
+                researchButtonWindowRef(researchButton) = null;
+            }
         }
+
+        private const string NodeResearchPackageId = "ferny.noderesearch";
+
+        private static readonly AccessTools.FieldRef<MainButtonDef, MainTabWindow> researchButtonWindowRef =
+            AccessTools.FieldRefAccess<MainButtonDef, MainTabWindow>("tabWindowInt");
+
+        /// <summary>Counts up after every layout pass, so the research window knows to re-read project positions.</summary>
+        public static int LayoutVersion { get; private set; }
 
         private static void OnGameFinalizeInit()
         {
@@ -185,6 +201,8 @@ namespace ResearchOrganized2
                 // Copies researchViewX/Y into the private x/y the window draws from; its overlap nudge
                 // only touches cards closer than this layout ever places them.
                 ResearchProjectDef.GenerateNonOverlappingCoordinates();
+
+                LayoutVersion++;
 
                 // Tells Node Research where its parked projects went, so its window re-collapses them.
                 NodeResearchCompat.SyncTabs();

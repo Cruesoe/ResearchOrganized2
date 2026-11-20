@@ -4,6 +4,9 @@ In some cases the result is not strictly linear, but I believe it makes the tree
 
 [h2]Features[/h2]
 [list]
+[*]A research window of its own, built on UI Rethemed - Core: drag to pan, wheel to zoom, a foldable details panel, an active project bar, search, and chips to show or hide locked, finished and future-era projects.
+[*]Fancier cards: era colors, state at a glance, unlock icons, techprint and study counters, a progress strip and a hover card.
+[*]Curved lines, and the selected project's whole prerequisite chain lights up.
 [*]Technologies are routed to their tech level's tab: Primitive, Neolithic, Medieval, Industrial, High Industrial, Late Industrial, Spacer, Ultra and Archotech. Empty tabs are hidden.
 [*]Industrial is split three ways: Industrial, High Industrial (needs the Hi-Tech Research Bench) and Late Industrial (needs the Multi-Analyzer).
 [*]Entity knowledge technologies are moved to the Anomaly tab.
@@ -16,8 +19,6 @@ In some cases the result is not strictly linear, but I believe it makes the tree
 
 [h2]Settings[/h2]
 [list]
-[*][b]Hide Unavailable Projects[/b]: shows only finished projects and those you can start now. Off by default.
-[*][b]Hide Future Tech Levels[/b]: hides unfinished projects above your colony's tech level. Off by default.
 [*][b]Full Screen Research Window[/b]: makes the research window as tall as the screen and fits as many projects into each column as that allows. A button beside the gear in the research window toggles it too. Off by default.
 [*][b]Show Tab Project Counts[/b]: shows completed/total counts on each tab. Off by default.
 [*][b]Combine All Tabs[/b]: puts everything except Anomaly, Gravship and Save Our Ship 2 on the Main tab, with each era in its own block from left to right. Off by default.
@@ -25,7 +26,6 @@ In some cases the result is not strictly linear, but I believe it makes the tree
 [*][b]Combine Industrial[/b]: merges High and Late Industrial back into one Industrial tab. Off by default.
 [*][b]Color Cards by Tech Level[/b]: pick each era's color, or turn the colors off.
 [*][b]Suppress Emergence Lines[/b]: hides lines to Node Research's emergence nodes unless one end is selected. On by default.
-[*][b]Match UI Rethemed Theme[/b]: with UI Rethemed - Core, gives the research window (background, tabs, panels, project cards, buttons, progress bar and lines) and the settings page UI Rethemed's look, with era colors picked on Core's settings page. On by default; needs UI Rethemed - Core.
 [/list]
 
 [h2]Compatibility[/h2]

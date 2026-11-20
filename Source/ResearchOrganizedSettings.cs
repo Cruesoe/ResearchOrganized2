@@ -19,6 +19,15 @@ namespace ResearchOrganized2
         public bool hideFutureTechLevels = false;
         public bool fullScreenResearch = false;
         public bool matchUIRethemed = true;
+        public bool hideFinishedProjects = false;
+        public bool cardUnlockIcons = true;
+        public bool cardHoverCard = true;
+        public bool cardProgressStrip = true;
+        public bool cardChips = true;
+        public bool curvedLines = true;
+        public bool highlightChain = true;
+        public bool openOnCurrentProject = false;
+        public bool detailsFolded = false;
 
         public Color colorUndefined = new Color(0.60f, 0.60f, 0.60f);
         public Color colorAnimal = new Color(0.45f, 0.33f, 0.24f);
@@ -47,6 +56,15 @@ namespace ResearchOrganized2
             Scribe_Values.Look(ref hideFutureTechLevels, "hideFutureTechLevels", false);
             Scribe_Values.Look(ref fullScreenResearch, "fullScreenResearch", false);
             Scribe_Values.Look(ref matchUIRethemed, "matchUIRethemed", true);
+            Scribe_Values.Look(ref hideFinishedProjects, "hideFinishedProjects", false);
+            Scribe_Values.Look(ref cardUnlockIcons, "cardUnlockIcons", true);
+            Scribe_Values.Look(ref cardHoverCard, "cardHoverCard", true);
+            Scribe_Values.Look(ref cardProgressStrip, "cardProgressStrip", true);
+            Scribe_Values.Look(ref cardChips, "cardChips", true);
+            Scribe_Values.Look(ref curvedLines, "curvedLines", true);
+            Scribe_Values.Look(ref highlightChain, "highlightChain", true);
+            Scribe_Values.Look(ref openOnCurrentProject, "openOnCurrentProject", false);
+            Scribe_Values.Look(ref detailsFolded, "detailsFolded", false);
             Scribe_Values.Look(ref colorUndefined, "colorUndefined", new Color(0.60f, 0.60f, 0.60f));
             Scribe_Values.Look(ref colorAnimal, "colorAnimal", new Color(0.45f, 0.33f, 0.24f));
             Scribe_Values.Look(ref colorNeolithic, "colorNeolithic", new Color(0.40f, 0.00f, 0.00f));
@@ -74,6 +92,14 @@ namespace ResearchOrganized2
             hideFutureTechLevels = defaults.hideFutureTechLevels;
             fullScreenResearch = defaults.fullScreenResearch;
             matchUIRethemed = defaults.matchUIRethemed;
+            hideFinishedProjects = defaults.hideFinishedProjects;
+            cardUnlockIcons = defaults.cardUnlockIcons;
+            cardHoverCard = defaults.cardHoverCard;
+            cardProgressStrip = defaults.cardProgressStrip;
+            cardChips = defaults.cardChips;
+            curvedLines = defaults.curvedLines;
+            highlightChain = defaults.highlightChain;
+            openOnCurrentProject = defaults.openOnCurrentProject;
             colorUndefined = defaults.colorUndefined;
             colorAnimal = defaults.colorAnimal;
             colorNeolithic = defaults.colorNeolithic;

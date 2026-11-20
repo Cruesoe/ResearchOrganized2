@@ -39,7 +39,7 @@ namespace ResearchOrganized2
         private static ResearchProjectDef SelectedProject(MainTabWindow_Research window) =>
             researchWindowSelectedProjectRef == null || window == null ? null : researchWindowSelectedProjectRef(window);
 
-        private static System.Collections.IList TabRecords(MainTabWindow_Research window)
+        internal static System.Collections.IList TabRecords(MainTabWindow_Research window)
         {
             if (researchWindowTabsField == null || window == null) return null;
             if (window != researchWindowTabsOwner)
@@ -50,7 +50,7 @@ namespace ResearchOrganized2
             return researchWindowTabs;
         }
 
-        private static ResearchTabDef TabRecordDef(object record)
+        internal static ResearchTabDef TabRecordDef(object record)
         {
             if (record == null || researchTabRecordDefField == null) return null;
             if (!tabRecordDefs.TryGetValue(record, out var def)) tabRecordDefs[record] = def = researchTabRecordDefField.GetValue(record) as ResearchTabDef;
@@ -249,7 +249,7 @@ namespace ResearchOrganized2
 
             var settings = ResearchOrganizedMod.settings;
             HashSet<ResearchTabDef> shown = null;
-            if (settings.hideUnavailableProjects || settings.hideFutureTechLevels)
+            if (settings.hideUnavailableProjects || settings.hideFutureTechLevels || settings.hideFinishedProjects)
             {
                 shown = new HashSet<ResearchTabDef>(visible.Select(p => p.tab).Where(t => t != null));
                 if (shown.Count == 0) shown = null;
@@ -334,7 +334,37 @@ namespace ResearchOrganized2
         private static bool tabStatsValid;
 
         /// <summary>Drops the cached tab counts; they are rebuilt in one pass on next use.</summary>
-        public static void InvalidateTabStats() => tabStatsValid = false;
+        public static void InvalidateTabStats()
+        {
+            tabStatsValid = false;
+            StatsVersion++;
+        }
+
+        /// <summary>Counts up whenever research progress may have changed, so caches built from project state know to rebuild.</summary>
+        public static int StatsVersion { get; private set; }
+
+        /// <summary>Finished and total projects across every tab.</summary>
+        internal static void TotalCounts(out int finished, out int total)
+        {
+            finished = 0;
+            total = 0;
+            var tabs = DefDatabase<ResearchTabDef>.AllDefsListForReading;
+            if (tabs.Count == 0) return;
+            GetTabStats(tabs[0]);
+            foreach (var stats in tabStats.Values)
+            {
+                finished += stats.completedProjects;
+                total += stats.totalProjects;
+            }
+        }
+
+        /// <summary>A tab's finished and total project counts.</summary>
+        internal static void TabCounts(ResearchTabDef tab, out int finished, out int total)
+        {
+            var stats = GetTabStats(tab);
+            finished = stats.completedProjects;
+            total = stats.totalProjects;
+        }
 
         private static TabStats GetTabStats(ResearchTabDef tabDef)
         {

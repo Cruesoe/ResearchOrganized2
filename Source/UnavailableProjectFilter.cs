@@ -45,13 +45,14 @@ namespace ResearchOrganized2
         {
             if (__state) ResearchOrganizedMain.MarkTabStripDirty();
             var settings = ResearchOrganizedMod.settings;
-            if (!__state || __result == null || !(settings.hideUnavailableProjects || settings.hideFutureTechLevels)) return;
+            if (!__state || __result == null || !(settings.hideUnavailableProjects || settings.hideFutureTechLevels || settings.hideFinishedProjects)) return;
             if (Current.ProgramState != ProgramState.Playing || Find.ResearchManager == null) return;
             // Node Research raises the player faction's tech level as eras emerge; otherwise it is the starting faction's.
             var colonyLevel = Faction.OfPlayer?.def.techLevel ?? TechLevel.Undefined;
             __result.RemoveAll(p =>
             {
-                if (p.IsFinished || Find.ResearchManager.IsCurrentProject(p)) return false;
+                if (Find.ResearchManager.IsCurrentProject(p)) return false;
+                if (p.IsFinished) return settings.hideFinishedProjects;
                 if (settings.hideFutureTechLevels && colonyLevel != TechLevel.Undefined && p.techLevel > colonyLevel) return true;
                 return settings.hideUnavailableProjects && !p.CanStartNow;
             });

@@ -22,7 +22,7 @@ namespace ResearchOrganized2
         private static readonly Color FoundationGold = new Color(0.75f, 0.62f, 0.32f, 0.9f);
         private const float FoundationNotchSize = 12f;
         private const int FoundationNotchTextureSize = 32;
-        private static readonly Texture2D FoundationNotchTex = BuildCornerNotchTexture(FoundationNotchTextureSize);
+        internal static readonly Texture2D FoundationNotchTex = BuildCornerNotchTexture(FoundationNotchTextureSize);
 
         private static readonly Dictionary<TechLevel, ColorSet> TabColors = new Dictionary<TechLevel, ColorSet>();
         private static readonly Dictionary<string, ColorSet> TabColorOverrides = new Dictionary<string, ColorSet>();
@@ -246,6 +246,9 @@ namespace ResearchOrganized2
             if (TabColors.TryGetValue(project.techLevel, out var byTechLevel)) return byTechLevel;
             return TabColors[TechLevel.Undefined];
         }
+
+        /// <summary>A project's card color: its era's, or its tab's override, from Core's palette while the theme is on.</summary>
+        internal static Color EraColor(ResearchProjectDef project) => ResolveColorSet(project).finished;
 
         private const string AnomalyColorKey = "Anomaly";
 

@@ -11,18 +11,9 @@ namespace ResearchOrganized2
         /// <summary>This mod, for UI Rethemed - Core to look up its palette.</summary>
         public static ResearchOrganizedMod Instance;
 
-        private static readonly Color[] Palette = new Color[]
-        {
-            new Color(0.40f, 0.00f, 0.00f), new Color(0.80f, 0.30f, 0.30f), new Color(0.80f, 0.50f, 0.10f), new Color(0.45f, 0.33f, 0.24f),
-            new Color(0.80f, 0.80f, 0.10f), new Color(0.40f, 0.40f, 0.00f), new Color(0.00f, 0.40f, 0.00f), new Color(0.30f, 0.70f, 0.30f),
-            new Color(0.00f, 0.40f, 0.40f), new Color(0.30f, 0.80f, 0.80f), new Color(0.00f, 0.00f, 0.40f), new Color(0.30f, 0.30f, 0.80f),
-            new Color(0.30f, 0.00f, 0.30f), new Color(0.60f, 0.30f, 0.60f), new Color(0.30f, 0.30f, 0.30f), new Color(0.60f, 0.60f, 0.60f)
-        };
-
         private const float RowHeight = 24f;
         private const float ColumnGap = 24f;
         private const float SubOptionIndent = 24f;
-        private const float ColorLabelWidth = 120f;
         private const float ResetButtonHeight = 32f;
 
         /// <summary>Values the layout was actually built with, so we know when to redo it.</summary>
@@ -95,6 +86,7 @@ namespace ResearchOrganized2
             };
             rightSections = new List<SkinSettingsSection>
             {
+                new SkinSettingsSection("Cards", T("ResearchOrganized2_SectionCards"), DrawCardsSection),
                 new SkinSettingsSection("Colors", T("ResearchOrganized2_SectionColors"), DrawColorsSection),
                 new SkinSettingsSection("Layout", T("ResearchOrganized2_SectionLayout"), DrawLayoutSection)
             };
@@ -160,14 +152,20 @@ namespace ResearchOrganized2
 
         private void DrawResearchWindowSection(Listing_Standard listing)
         {
-            // Only with UI Rethemed - Core, which loads the add-on that supplies the look.
-            Checkbox(listing, "ResearchOrganized2_MatchUIRethemed", "ResearchOrganized2_MatchUIRethemedTip", ref settings.matchUIRethemed,
-                disabled: !ResearchSkin.Available, disabledTipKey: "ResearchOrganized2_MatchUIRethemedLockedTip");
             Checkbox(listing, "ResearchOrganized2_FullScreen", "ResearchOrganized2_FullScreenTip", ref settings.fullScreenResearch);
-            Checkbox(listing, "ResearchOrganized2_HideUnavailable", "ResearchOrganized2_HideUnavailableTip", ref settings.hideUnavailableProjects);
-            Checkbox(listing, "ResearchOrganized2_HideFutureTechLevels", "ResearchOrganized2_HideFutureTechLevelsTip", ref settings.hideFutureTechLevels);
+            Checkbox(listing, "ResearchOrganized2_OpenOnCurrent", "ResearchOrganized2_OpenOnCurrentTip", ref settings.openOnCurrentProject);
             Checkbox(listing, "ResearchOrganized2_ShowTabCounts", "ResearchOrganized2_ShowTabCountsTip", ref settings.showTabProjectCounts);
+            Checkbox(listing, "ResearchOrganized2_CurvedLines", "ResearchOrganized2_CurvedLinesTip", ref settings.curvedLines);
+            Checkbox(listing, "ResearchOrganized2_HighlightChain", "ResearchOrganized2_HighlightChainTip", ref settings.highlightChain);
             Checkbox(listing, "ResearchOrganized2_SuppressEmergenceLines", "ResearchOrganized2_SuppressEmergenceLinesTip", ref settings.suppressEmergenceLines);
+        }
+
+        private void DrawCardsSection(Listing_Standard listing)
+        {
+            Checkbox(listing, "ResearchOrganized2_CardUnlockIcons", "ResearchOrganized2_CardUnlockIconsTip", ref settings.cardUnlockIcons);
+            Checkbox(listing, "ResearchOrganized2_CardChips", "ResearchOrganized2_CardChipsTip", ref settings.cardChips);
+            Checkbox(listing, "ResearchOrganized2_CardProgressStrip", "ResearchOrganized2_CardProgressStripTip", ref settings.cardProgressStrip);
+            Checkbox(listing, "ResearchOrganized2_CardHoverCard", "ResearchOrganized2_CardHoverCardTip", ref settings.cardHoverCard);
         }
 
         private void DrawTabsSection(Listing_Standard listing)
@@ -199,19 +197,7 @@ namespace ResearchOrganized2
             Checkbox(listing, "ResearchOrganized2_ColorCards", "ResearchOrganized2_ColorCardsTip", ref useColors);
             settings.disableCustomColors = !useColors;
 
-            // With the theme on, card colors are picked on UI Rethemed - Core's settings page instead.
-            string paletteLockKey = !useColors ? "ResearchOrganized2_RequiresColorCards"
-                : ResearchSkin.Active != null ? "ResearchOrganized2_ColorsOnCoreTip" : null;
-            if (ResearchSkin.Active != null && useColors) SubNote(listing, "ResearchOrganized2_ColorsOnCoreTip");
-            DrawColorPalette(listing, "ResearchOrganized2_ColorUndefined", ref settings.colorUndefined, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorAnimal", ref settings.colorAnimal, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorNeolithic", ref settings.colorNeolithic, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorMedieval", ref settings.colorMedieval, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorIndustrial", ref settings.colorIndustrial, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorSpacer", ref settings.colorSpacer, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorUltra", ref settings.colorUltra, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorArchotech", ref settings.colorArchotech, paletteLockKey);
-            DrawColorPalette(listing, "ResearchOrganized2_ColorAnomaly", ref settings.colorAnomaly, paletteLockKey);
+            if (useColors) SubNote(listing, "ResearchOrganized2_ColorsOnCoreTip");
         }
 
         private void DrawLayoutSection(Listing_Standard listing)
@@ -271,42 +257,5 @@ namespace ResearchOrganized2
             listing.Gap(listing.verticalSpacing);
         }
 
-        /// <summary>A row of color swatches; with <paramref name="lockedTipKey"/> it is greyed and inert, with that key as its tooltip.</summary>
-        private void DrawColorPalette(Listing_Standard listing, string key, ref Color selectedColor, string lockedTipKey)
-        {
-            Rect rect = listing.GetRect(RowHeight);
-            bool enabled = lockedTipKey == null;
-            if (!enabled)
-            {
-                GUI.color = Color.gray;
-                TooltipHandler.TipRegion(rect, T(lockedTipKey));
-            }
-            Widgets.Label(new Rect(rect.x, rect.y + 2f, ColorLabelWidth, rect.height - 2f), T(key));
-
-            // Swatches share the space right of the label, up to 24 pixels apart.
-            float step = Mathf.Min(24f, (rect.width - ColorLabelWidth) / Palette.Length);
-            float size = Mathf.Min(step - 2f, rect.height - 2f);
-            float curX = rect.x + ColorLabelWidth;
-            foreach (Color color in Palette)
-            {
-                Rect swatchRect = new Rect(curX, rect.y + (rect.height - size) / 2f, size, size);
-                Widgets.DrawBoxSolid(swatchRect, enabled ? color : Color.Lerp(color, Color.gray, 0.6f));
-
-                if (ColorsMatch(color, selectedColor)) Widgets.DrawBox(swatchRect, 2);
-
-                if (enabled && Widgets.ButtonInvisible(swatchRect)) selectedColor = color;
-
-                curX += step;
-            }
-            GUI.color = Color.white;
-            listing.Gap(2f);
-        }
-
-        private static bool ColorsMatch(Color a, Color b)
-        {
-            return Mathf.Abs(a.r - b.r) < 0.01f &&
-                   Mathf.Abs(a.g - b.g) < 0.01f &&
-                   Mathf.Abs(a.b - b.b) < 0.01f;
-        }
     }
 }

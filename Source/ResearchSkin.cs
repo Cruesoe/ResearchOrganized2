@@ -19,7 +19,7 @@ namespace ResearchOrganized2
 
         /// <summary>The add-on while the Match UI Rethemed setting is on.</summary>
         public static ResearchSkin Active =>
-            Available && (ResearchOrganizedMod.settings == null || ResearchOrganizedMod.settings.matchUIRethemed) ? registered : null;
+            Available ? registered : null;
 
         /// <summary>A themed draw threw (usually a Core update that changed its API): the mod's own look is used for the rest of the session.</summary>
         public static void Fail(Exception e)
