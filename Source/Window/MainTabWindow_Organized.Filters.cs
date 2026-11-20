@@ -65,6 +65,7 @@ namespace ResearchOrganized2
                 zoomInIcon = CoreWidgets.Icon("plus");
                 zoomOutIcon = CoreWidgets.Icon("minus");
                 fitIcon = CoreWidgets.Icon("frame-corners");
+                cardSizeIcon = CoreWidgets.Icon("cards");
             }
             var settings = ResearchOrganizedMod.settings;
             float x = rect.x;
@@ -75,15 +76,43 @@ namespace ResearchOrganized2
             if (FilterChip(ref x, rect, "ResearchOrganized2_FilterFuture", "ResearchOrganized2_FilterFutureTip", futureIcon, !settings.hideFutureTechLevels))
                 SetFilter(ref settings.hideFutureTechLevels);
 
+            // Core's header-button look, right to left: fit, zoom in, zoom level, zoom out, then card size.
             float right = rect.xMax;
-            Rect fit = new Rect(right - 28f, rect.y + 1f, 28f, 28f);
-            if (CoreWidgets.IconButton(fit, fitIcon, TranslationCache.Get("ResearchOrganized2_FitTip"))) FitNextDraw();
-            Rect zoomIn = new Rect(fit.x - 32f, fit.y, 28f, 28f);
-            if (CoreWidgets.IconButton(zoomIn, zoomInIcon, TranslationCache.Get("ResearchOrganized2_ZoomInTip"))) ZoomBy(1);
-            Rect zoomLabel = new Rect(zoomIn.x - 52f, rect.y, 48f, rect.height);
+            float y = Mathf.Round(rect.center.y - 12f);
+            if (HeaderTool(ref right, y, fitIcon, "ResearchOrganized2_FitTip")) FitNextDraw();
+            if (HeaderTool(ref right, y, zoomInIcon, "ResearchOrganized2_ZoomInTip")) ZoomBy(1);
+            Rect zoomLabel = new Rect(right - 48f, rect.y, 48f, rect.height);
             CoreWidgets.Line(zoomLabel, ZoomLabel, Theme.TextDim, GameFont.Small, TextAnchor.MiddleCenter);
-            Rect zoomOut = new Rect(zoomLabel.x - 32f, fit.y, 28f, 28f);
-            if (CoreWidgets.IconButton(zoomOut, zoomOutIcon, TranslationCache.Get("ResearchOrganized2_ZoomOutTip"))) ZoomBy(-1);
+            right = zoomLabel.x - 4f;
+            if (HeaderTool(ref right, y, zoomOutIcon, "ResearchOrganized2_ZoomOutTip")) ZoomBy(-1);
+            right -= 8f;
+            if (HeaderTool(ref right, y, cardSizeIcon, "ResearchOrganized2_CardSize", CardSizeTip)) ResearchOrganizedMod.ChooseCardSize();
+        }
+
+        private static Texture2D cardSizeIcon;
+        private string cardSizeTip;
+        private int cardSizeTipFor = -1;
+
+        private string CardSizeTip
+        {
+            get
+            {
+                int size = ResearchOrganizedMod.settings.cardSize;
+                if (cardSizeTip == null || cardSizeTipFor != size)
+                {
+                    cardSizeTipFor = size;
+                    cardSizeTip = "ResearchOrganized2_CardSizeButtonTip".Translate(ResearchOrganizedMod.CardSizeLabel(size));
+                }
+                return cardSizeTip;
+            }
+        }
+
+        /// <summary>A 24px header button placed left of <paramref name="right"/>, which moves past it.</summary>
+        private static bool HeaderTool(ref float right, float y, Texture icon, string titleKey, string tip = null)
+        {
+            Rect button = new Rect(right - 24f, y, 24f, 24f);
+            right = button.x - 4f;
+            return CoreWidgets.HeaderTool(button, icon, TranslationCache.Get(titleKey), tip);
         }
 
         private static bool FilterChip(ref float x, Rect bar, string labelKey, string tipKey, Texture icon, bool shown)

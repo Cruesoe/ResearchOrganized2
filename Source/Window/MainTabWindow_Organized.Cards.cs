@@ -10,7 +10,6 @@ namespace ResearchOrganized2
     public partial class MainTabWindow_Organized
     {
         private const int MaxCardIcons = 3;
-        private const float IconSize = 16f;
 
         /// <summary>A project's unchanging card text and hover card, built once per project for the session's language.</summary>
         private sealed class CardInfo
@@ -188,17 +187,24 @@ namespace ResearchOrganized2
             float width = card.xMax - 6f - left;
             Color text = Faces.Fade(locked ? Theme.TextDim : Color.white, alpha);
             string label = hidden ? TranslationCache.Get("ResearchOrganized2_UnknownProject") : info.label;
+            if (!M.twoRows)
+            {
+                // Compact cards hold the name only, centered.
+                CoreWidgets.Line(new Rect(left, card.y, width, card.height), label, text);
+                return;
+            }
             CoreWidgets.Line(new Rect(left, card.y + 2f, width, 22f), label, text);
             if (zoom < 0.85f || hidden) return;
 
             // Second row: status on the left, requirement chips and unlock icons on the right.
-            Rect row = new Rect(left, card.yMax - 24f, width, 20f);
+            float iconSize = M.iconSize;
+            Rect row = new Rect(left, card.yMax - Mathf.Max(24f, iconSize + 6f), width, Mathf.Max(20f, iconSize + 4f));
             float right = row.xMax;
             if (settings.cardUnlockIcons)
             {
-                for (int i = info.icons.Count - 1; i >= 0 && right - IconSize > row.x + 50f; i--)
+                for (int i = info.icons.Count - 1; i >= 0 && right - iconSize > row.x + 50f; i--)
                 {
-                    Rect icon = new Rect(right - IconSize, row.y + 2f, IconSize, IconSize);
+                    Rect icon = new Rect(right - iconSize, row.y + 2f, iconSize, iconSize);
                     Widgets.DefIcon(icon, info.icons[i]);
                     right = icon.x - 3f;
                 }

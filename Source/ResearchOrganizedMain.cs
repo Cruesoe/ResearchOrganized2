@@ -121,22 +121,23 @@ namespace ResearchOrganized2
             }
 
             UnavailableProjectFilter.Patch(harmony);
+            ResearchRate.Patch(harmony);
 
             // The UI Rethemed look for the rest of the research window, used only while Match UI Rethemed Theme is on.
             ResearchWindowTheme.Patch(harmony);
 
             OrganizeTabsAndLayout();
 
-            // The Research button opens this mod's window, unless Node Research has taken the button for its own.
+            WindowHandover.Patch(harmony);
+
+            // The Research button opens this mod's window, unless Node Research has taken it or Semi Random Research decides.
             var researchButton = MainButtonDefOf.Research;
-            if (researchButton != null && !ModsConfig.IsActive(NodeResearchPackageId))
+            if (researchButton != null && !WindowHandover.NodeResearchActive && !WindowHandover.SemiRandomActive)
             {
                 researchButton.tabWindowClass = typeof(MainTabWindow_Organized);
                 researchButtonWindowRef(researchButton) = null;
             }
         }
-
-        private const string NodeResearchPackageId = "ferny.noderesearch";
 
         private static readonly AccessTools.FieldRef<MainButtonDef, MainTabWindow> researchButtonWindowRef =
             AccessTools.FieldRefAccess<MainButtonDef, MainTabWindow>("tabWindowInt");

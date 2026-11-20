@@ -10,6 +10,9 @@ Research window
 - A research window of its own, built on UI Rethemed - Core: pan and zoom, a foldable details panel, an active project bar, search and filter chips.
 - Cards show their era's color and state, unlock icons, techprint and study counters, a progress strip and a hover card.
 - Curved lines, and the selected project's whole prerequisite chain lights up.
+- Era bands tint each era's columns and name it along the top, on tabs laid out era by era.
+- The active project bar shows roughly how long the current project has left, at the colony's recent pace.
+- Compact, Normal and Large cards.
 - Era colors are picked on UI Rethemed - Core's settings page, and can be turned off.
 
 Tabs
@@ -26,12 +29,11 @@ Layout
 - Projects caught in a circular dependency are outlined in red and named in the log.
 
 Compatibility
-- Node Research: foundation technologies get a gold corner mark, emergence nodes stay beside their branch without cluttering lines, and you can switch freely between its node view and these tabs.
+- Node Research: foundation technologies get a gold corner mark, and emergence nodes stay beside their branch without cluttering lines. Its vanilla menu button opens this window, and a button in this window's title bar goes back.
+- Semi Random Research - Continued and Research Queue: their tree buttons open this window, and a button in its title bar goes back.
 - ProgressionLESS: loads after every mod in the suite, so their research lands in the right tabs.
 - VFE Tribals: its Basics tab takes the Primitive projects.
-- Save Our Ship 2: its Ship and Archotech tabs keep their own projects, even with Combine All Tabs on.
-- Semi Random Research: its button and the settings gear sit side by side.
-- Research Icons works alongside: columns widen to fit its wider cards.</description>
+- Save Our Ship 2: its Ship and Archotech tabs keep their own projects, even with Combine All Tabs on.</description>
   <supportedVersions>
     <li>1.6</li>
     <li>1.7</li>

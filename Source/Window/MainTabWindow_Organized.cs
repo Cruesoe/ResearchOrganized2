@@ -51,6 +51,8 @@ namespace ResearchOrganized2
 
         public override void PreOpen()
         {
+            // Projects Node Research parked on its own tab go back to theirs while this window is open.
+            NodeResearchCompat.RestoreTabs();
             base.PreOpen();
             doWindowBackground = false;
             openedAt = Time.realtimeSinceStartup;
@@ -121,6 +123,9 @@ namespace ResearchOrganized2
         private static Texture2D titleIcon;
         private static Texture2D fullScreenIcon;
         private static Texture2D exitFullScreenIcon;
+        private static Texture2D nodeResearchIcon;
+        private static Texture2D semiRandomIcon;
+        private static Texture2D queueIcon;
 
         private void DrawTitleBar(Rect rect)
         {
@@ -129,20 +134,31 @@ namespace ResearchOrganized2
                 titleIcon = CoreWidgets.Icon("flask");
                 fullScreenIcon = CoreWidgets.Icon("arrows-out");
                 exitFullScreenIcon = CoreWidgets.Icon("arrows-in");
+                nodeResearchIcon = CoreWidgets.Icon("tree-structure");
+                semiRandomIcon = CoreWidgets.Icon("dice-five");
+                queueIcon = CoreWidgets.Icon("list-numbers");
             }
             float age = ThemeMotion.On ? Time.realtimeSinceStartup - openedAt : float.MaxValue;
             Rect room = CoreWidgets.TitleBar(rect, titleIcon, def.LabelCap, age, close, ResearchOrganizedMod.Instance);
 
             float right = room.xMax;
+            float y = Mathf.Round(rect.center.y - 12f);
             var settings = ResearchOrganizedMod.settings;
             bool fullScreen = settings.fullScreenResearch;
-            if (CoreWidgets.TitleTool(rect, ref right, fullScreen ? exitFullScreenIcon : fullScreenIcon,
-                    TranslationCache.Get(fullScreen ? "ResearchOrganized2_ExitFullScreenTip" : "ResearchOrganized2_EnterFullScreenTip")))
+            if (HeaderTool(ref right, y, fullScreen ? exitFullScreenIcon : fullScreenIcon,
+                    fullScreen ? "ResearchOrganized2_ExitFullScreenTip" : "ResearchOrganized2_EnterFullScreenTip"))
             {
                 settings.fullScreenResearch = !fullScreen;
                 settings.Write();
                 SetInitialSizeAndPosition();
             }
+            // Buttons to the other research windows that are installed.
+            if (WindowHandover.CanOpenQueue && HeaderTool(ref right, y, queueIcon, "ResearchOrganized2_OpenResearchQueue"))
+                WindowHandover.OpenQueue(this);
+            if (WindowHandover.CanOpenSemiRandom && HeaderTool(ref right, y, semiRandomIcon, "ResearchOrganized2_OpenSemiRandom"))
+                WindowHandover.OpenSemiRandom(this);
+            if (WindowHandover.CanOpenNodeResearch && HeaderTool(ref right, y, nodeResearchIcon, "ResearchOrganized2_OpenNodeResearch"))
+                WindowHandover.OpenNodeResearch(this);
 
             ResearchOrganizedMain.TotalCounts(out int finished, out int total);
             if (totalsLabel == null || finished != totalsFinished || total != totalsTotal)

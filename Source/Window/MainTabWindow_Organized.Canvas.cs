@@ -9,11 +9,31 @@ namespace ResearchOrganized2
 {
     public partial class MainTabWindow_Organized
     {
-        // Vanilla's research coordinates: pixels per unit of researchViewX and researchViewY, and its card width.
-        private const float PixelsPerX = 190f;
-        private const float PixelsPerY = 100f;
-        private const float CardWidth = 140f;
-        private const float CardHeight = 52f;
+        /// <summary>Pixels per unit of researchViewX and researchViewY, and the card size, for one card size setting.</summary>
+        private struct CardMetrics
+        {
+            public float perX;
+            public float perY;
+            public float width;
+            public float height;
+            public float iconSize;
+            public bool twoRows;
+        }
+
+        // Compact, Normal (vanilla's spacing and card width) and Large.
+        private static readonly CardMetrics[] Sizes =
+        {
+            new CardMetrics { perX = 170f, perY = 78f, width = 130f, height = 40f, iconSize = 14f, twoRows = false },
+            new CardMetrics { perX = 190f, perY = 100f, width = 140f, height = 52f, iconSize = 16f, twoRows = true },
+            new CardMetrics { perX = 230f, perY = 125f, width = 180f, height = 66f, iconSize = 20f, twoRows = true }
+        };
+
+        /// <summary>The card size in use, read from the settings at the start of each canvas draw.</summary>
+        private static CardMetrics M = Sizes[1];
+        private int metricsSize = -1;
+
+        private float CardWidth => M.width;
+        private float CardHeight => M.height;
         private const float KnowledgeStrip = 14f;
         private const float CanvasMargin = 24f;
         private const int CurveSegments = 10;
@@ -31,6 +51,7 @@ namespace ResearchOrganized2
         private ResearchTabDef projectsTab;
         private List<ResearchProjectDef> projectsSource;
         private int projectsLayout = -1;
+        private int projectsSettings = -1;
         private Rect tabBounds;
 
         /// <summary>The selected project's prerequisites, all the way back, on the current tab.</summary>
@@ -113,23 +134,39 @@ namespace ResearchOrganized2
             view.Home(local.center - center * ZoomSteps[next], ZoomSteps[next]);
         }
 
-        private static float PosX(ResearchProjectDef project) => project.ResearchViewX * PixelsPerX;
-        private static float PosY(ResearchProjectDef project) => project.ResearchViewY * PixelsPerY;
+        private static float PosX(ResearchProjectDef project) => project.ResearchViewX * M.perX;
+        private static float PosY(ResearchProjectDef project) => project.ResearchViewY * M.perY;
 
         private static float ExtraWidth(ResearchProjectDef project) =>
             ModsConfig.AnomalyActive && project.knowledgeCategory != null ? KnowledgeStrip : 0f;
 
         private static Rect CardRect(ResearchProjectDef project) =>
-            new Rect(PosX(project), PosY(project), CardWidth + ExtraWidth(project), CardHeight);
+            new Rect(PosX(project), PosY(project), M.width + ExtraWidth(project), M.height);
+
+        /// <summary>Picks up a changed card size; every tab is homed again, since its positions all moved.</summary>
+        private void UpdateMetrics()
+        {
+            int size = Mathf.Clamp(ResearchOrganizedMod.settings.cardSize, 0, Sizes.Length - 1);
+            if (size == metricsSize) return;
+            bool changed = metricsSize >= 0;
+            metricsSize = size;
+            M = Sizes[size];
+            if (!changed) return;
+            homedTabs.Clear();
+            projectsSource = null;
+            centerPending = Selected;
+        }
 
         private void RefreshTabProjects()
         {
             var visible = VisibleResearchProjects;
             int layout = ResearchOrganizedMain.LayoutVersion;
-            if (projectsTab == CurTab && ReferenceEquals(projectsSource, visible) && projectsLayout == layout) return;
+            int settingsVersion = ResearchOrganizedMod.SettingsVersion;
+            if (projectsTab == CurTab && ReferenceEquals(projectsSource, visible) && projectsLayout == layout && projectsSettings == settingsVersion) return;
             projectsTab = CurTab;
             projectsSource = visible;
             projectsLayout = layout;
+            projectsSettings = settingsVersion;
             chainFor = null;
             tabProjects.Clear();
             tabProjectSet.Clear();
@@ -146,6 +183,91 @@ namespace ResearchOrganized2
                 any = true;
             }
             tabBounds = any ? bounds.ExpandedBy(CanvasMargin) : new Rect(0f, 0f, 400f, 300f);
+            RefreshEraBands();
+            if (eraBands.Count > 0) tabBounds.yMin -= EraLabelHeight;
+        }
+
+        // Era bands: a tinted column behind each era, with its name along the top, on tabs laid out era by era.
+
+        private const float EraLabelHeight = 28f;
+
+        private struct EraBand
+        {
+            public float xMin;
+            public float xMax;
+            public string label;
+            public Color color;
+        }
+
+        private readonly List<EraBand> eraBands = new List<EraBand>();
+        private static readonly Dictionary<TechLevel, string> eraLabels = new Dictionary<TechLevel, string>();
+
+        /// <summary>One band per era when the tab holds more than one and their columns don't overlap; none otherwise.</summary>
+        private void RefreshEraBands()
+        {
+            eraBands.Clear();
+            if (!ResearchOrganizedMod.settings.eraBands || tabProjects.Count == 0) return;
+            var ranges = new SortedDictionary<TechLevel, EraBand>();
+            foreach (var project in tabProjects)
+            {
+                Rect card = CardRect(project);
+                if (ranges.TryGetValue(project.techLevel, out var band))
+                {
+                    band.xMin = Mathf.Min(band.xMin, card.xMin);
+                    band.xMax = Mathf.Max(band.xMax, card.xMax);
+                }
+                else
+                {
+                    if (!eraLabels.TryGetValue(project.techLevel, out string label))
+                        eraLabels[project.techLevel] = label = project.techLevel.ToStringHuman().CapitalizeFirst();
+                    band = new EraBand { xMin = card.xMin, xMax = card.xMax, label = label, color = ResearchOrganizedMain.EraColor(project) };
+                }
+                ranges[project.techLevel] = band;
+            }
+            if (ranges.Count < 2) return;
+            foreach (var band in ranges.Values) eraBands.Add(band);
+            eraBands.Sort((a, b) => a.xMin.CompareTo(b.xMin));
+            for (int i = 1; i < eraBands.Count; i++)
+            {
+                if (eraBands[i].xMin < eraBands[i - 1].xMax)
+                {
+                    eraBands.Clear();
+                    return;
+                }
+            }
+            // Each band reaches halfway into the gap on either side.
+            for (int i = 0; i < eraBands.Count; i++)
+            {
+                var band = eraBands[i];
+                float left = i > 0 ? (eraBands[i - 1].xMax + band.xMin) / 2f : band.xMin - CanvasMargin / 2f;
+                float right = i < eraBands.Count - 1 ? (band.xMax + eraBands[i + 1].xMin) / 2f : band.xMax + CanvasMargin / 2f;
+                band.xMin = left;
+                band.xMax = right;
+                eraBands[i] = band;
+            }
+        }
+
+        private void DrawEraBands(ZoomView view, Rect local)
+        {
+            if (eraBands.Count == 0) return;
+            bool colors = !ResearchOrganizedMod.settings.disableCustomColors;
+            for (int i = 0; i < eraBands.Count; i++)
+            {
+                var band = eraBands[i];
+                float xMin = Mathf.Max(local.xMin, view.ToScreen(new Vector2(band.xMin, 0f)).x);
+                float xMax = Mathf.Min(local.xMax, view.ToScreen(new Vector2(band.xMax, 0f)).x);
+                if (xMax <= xMin) continue;
+                Color color = colors ? band.color : Theme.HighlightGray;
+                Rect column = new Rect(xMin, local.y, xMax - xMin, local.height);
+                if (Event.current.type == EventType.Repaint)
+                {
+                    Theme.Fill(column, Faces.Fade(color, i % 2 == 0 ? 0.07f : 0.11f));
+                    if (i > 0) Theme.Fill(new Rect(xMin, local.y, 1f, local.height), Faces.Fade(color, 0.3f));
+                }
+                // The name stays at the top of the canvas, over the visible part of its band.
+                Rect label = new Rect(column.x + 8f, local.y + 4f, Mathf.Max(0f, column.width - 16f), 22f);
+                CoreWidgets.Line(label, band.label, Faces.Fade(Color.Lerp(color, Color.white, 0.55f), 0.9f), GameFont.Small, TextAnchor.MiddleCenter);
+            }
         }
 
         private void RefreshChain()
@@ -192,6 +314,7 @@ namespace ResearchOrganized2
                 return;
             }
 
+            UpdateMetrics();
             RefreshTabProjects();
             var view = View(CurTab);
             Rect local = rect.AtZero().ContractedBy(1f);
@@ -227,6 +350,7 @@ namespace ResearchOrganized2
             {
                 HandleCardClick(view, local);
                 view.HandleInput(local);
+                DrawEraBands(view, local);
                 if (Event.current.type == EventType.Repaint) DrawLines(view, local);
                 DrawCards(view, local);
             }

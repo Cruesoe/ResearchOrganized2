@@ -127,6 +127,8 @@ namespace ResearchOrganized2
         private ResearchProjectDef[] progressFor = new ResearchProjectDef[2];
         private readonly int[] progressShown = { -1, -1 };
         private readonly string[] progressText = new string[2];
+        private readonly int[] progressHour = { -1, -1 };
+        private readonly bool[] progressTimeLeft = new bool[2];
 
         private void DrawActiveBar(Rect rect)
         {
@@ -184,11 +186,18 @@ namespace ResearchOrganized2
             if (Widgets.ButtonInvisible(label)) SelectProject(project, true);
 
             int shown = Mathf.FloorToInt(project.ProgressApparent);
-            if (progressFor[slot] != project || progressShown[slot] != shown)
+            int hour = ResearchRate.Hour;
+            bool timeLeft = ResearchOrganizedMod.settings.showTimeLeft;
+            if (progressFor[slot] != project || progressShown[slot] != shown || progressHour[slot] != hour || progressTimeLeft[slot] != timeLeft)
             {
                 progressFor[slot] = project;
                 progressShown[slot] = shown;
-                progressText[slot] = project.ProgressApparentString + " / " + info.cost;
+                progressHour[slot] = hour;
+                progressTimeLeft[slot] = timeLeft;
+                string line = project.ProgressApparentString + " / " + info.cost;
+                int ticks = timeLeft ? ResearchRate.TicksLeft(project) : -1;
+                if (ticks > 0) line += ", " + "ResearchOrganized2_TimeLeft".Translate(ticks.ToStringTicksToPeriod());
+                progressText[slot] = line;
             }
             Text.Font = GameFont.Small;
             float textWidth = Text.CalcSize(progressText[slot]).x + 8f;

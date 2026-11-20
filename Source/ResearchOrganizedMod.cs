@@ -11,6 +11,9 @@ namespace ResearchOrganized2
         /// <summary>This mod, for UI Rethemed - Core to look up its palette.</summary>
         public static ResearchOrganizedMod Instance;
 
+        /// <summary>Counts up on every settings save, so the research window knows to rebuild what depends on them.</summary>
+        public static int SettingsVersion { get; private set; }
+
         private const float RowHeight = 24f;
         private const float ColumnGap = 24f;
         private const float SubOptionIndent = 24f;
@@ -57,6 +60,7 @@ namespace ResearchOrganized2
                                  || (settings.writeLayoutLog && !appliedWriteLayoutLog);
 
             base.WriteSettings();
+            SettingsVersion++;
             ResearchOrganizedMain.RefreshColors();
             UnavailableProjectFilter.Invalidate();
 
@@ -157,11 +161,45 @@ namespace ResearchOrganized2
             Checkbox(listing, "ResearchOrganized2_ShowTabCounts", "ResearchOrganized2_ShowTabCountsTip", ref settings.showTabProjectCounts);
             Checkbox(listing, "ResearchOrganized2_CurvedLines", "ResearchOrganized2_CurvedLinesTip", ref settings.curvedLines);
             Checkbox(listing, "ResearchOrganized2_HighlightChain", "ResearchOrganized2_HighlightChainTip", ref settings.highlightChain);
+            Checkbox(listing, "ResearchOrganized2_EraBands", "ResearchOrganized2_EraBandsTip", ref settings.eraBands);
+            Checkbox(listing, "ResearchOrganized2_ShowTimeLeft", "ResearchOrganized2_ShowTimeLeftTip", ref settings.showTimeLeft);
             Checkbox(listing, "ResearchOrganized2_SuppressEmergenceLines", "ResearchOrganized2_SuppressEmergenceLinesTip", ref settings.suppressEmergenceLines);
+        }
+
+        /// <summary>Labels of the card sizes, smallest first, as the setting stores them.</summary>
+        internal static readonly string[] CardSizeKeys = { "ResearchOrganized2_CardSizeCompact", "ResearchOrganized2_CardSizeNormal", "ResearchOrganized2_CardSizeLarge" };
+
+        internal static string CardSizeLabel(int size) => TranslationCache.Get(CardSizeKeys[Mathf.Clamp(size, 0, CardSizeKeys.Length - 1)]);
+
+        /// <summary>Opens a menu of the card sizes; picking one saves it at once.</summary>
+        internal static void ChooseCardSize()
+        {
+            var options = new List<FloatMenuOption>();
+            for (int i = 0; i < CardSizeKeys.Length; i++)
+            {
+                int size = i;
+                options.Add(new FloatMenuOption(CardSizeLabel(size), () =>
+                {
+                    settings.cardSize = size;
+                    settings.Write();
+                }));
+            }
+            Find.WindowStack.Add(new FloatMenu(options));
         }
 
         private void DrawCardsSection(Listing_Standard listing)
         {
+            Rect row = listing.GetRect(RowHeight + 4f);
+            Rect button = new Rect(row.xMax - 120f, row.y, 120f, row.height);
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Widgets.Label(new Rect(row.x, row.y, row.width - 128f, row.height), T("ResearchOrganized2_CardSize"));
+            Text.Anchor = TextAnchor.UpperLeft;
+            string sizeLabel = CardSizeLabel(settings.cardSize);
+            var skin = ResearchSkin.Active;
+            bool clicked = skin != null && skin.Button(button, sizeLabel, SkinTone.Gray, true) ? Widgets.ButtonInvisible(button) : Widgets.ButtonText(button, sizeLabel);
+            if (clicked) ChooseCardSize();
+            TooltipHandler.TipRegion(row, T("ResearchOrganized2_CardSizeTip"));
+            listing.Gap(listing.verticalSpacing);
             Checkbox(listing, "ResearchOrganized2_CardUnlockIcons", "ResearchOrganized2_CardUnlockIconsTip", ref settings.cardUnlockIcons);
             Checkbox(listing, "ResearchOrganized2_CardChips", "ResearchOrganized2_CardChipsTip", ref settings.cardChips);
             Checkbox(listing, "ResearchOrganized2_CardProgressStrip", "ResearchOrganized2_CardProgressStripTip", ref settings.cardProgressStrip);

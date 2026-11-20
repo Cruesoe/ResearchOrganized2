@@ -11,7 +11,7 @@
   <!-- Settings -->
   <ResearchOrganized2_SectionResearchWindow>Research Window</ResearchOrganized2_SectionResearchWindow>
   <ResearchOrganized2_FullScreen>Full Screen Research Window</ResearchOrganized2_FullScreen>
-  <ResearchOrganized2_FullScreenTip>Makes the research window as tall as the screen allows and fits as many projects into each column as that height holds. The button beside the settings gear in the research window toggles this too.</ResearchOrganized2_FullScreenTip>
+  <ResearchOrganized2_FullScreenTip>Makes the research window as tall as the screen. The button in the window's title bar toggles this too.</ResearchOrganized2_FullScreenTip>
   <ResearchOrganized2_ShowTabCounts>Show Tab Project Counts</ResearchOrganized2_ShowTabCounts>
   <ResearchOrganized2_ShowTabCountsTip>Shows completed/total project counts next to each tab's name. Every tab's tooltip always shows project and research point totals, regardless of this setting.</ResearchOrganized2_ShowTabCountsTip>
   <ResearchOrganized2_SuppressEmergenceLines>Suppress Emergence Lines</ResearchOrganized2_SuppressEmergenceLines>
@@ -76,5 +76,19 @@
   <ResearchOrganized2_CardProgressStrip>Progress Strip</ResearchOrganized2_CardProgressStrip>
   <ResearchOrganized2_CardProgressStripTip>Shows a thin progress bar along the bottom of cards that have progress.</ResearchOrganized2_CardProgressStripTip>
   <ResearchOrganized2_CardHoverCard>Hover Card</ResearchOrganized2_CardHoverCard>
+  <ResearchOrganized2_EraBands>Era Bands</ResearchOrganized2_EraBands>
+  <ResearchOrganized2_EraBandsTip>On tabs laid out era by era, tints each era's columns and shows its name along the top.</ResearchOrganized2_EraBandsTip>
+  <ResearchOrganized2_ShowTimeLeft>Show Time Left</ResearchOrganized2_ShowTimeLeft>
+  <ResearchOrganized2_ShowTimeLeftTip>Shows roughly how long the current project will take, at the colony's research pace over the last day. Appears after an hour of research.</ResearchOrganized2_ShowTimeLeftTip>
+  <ResearchOrganized2_TimeLeft>about {0} left</ResearchOrganized2_TimeLeft>
+  <ResearchOrganized2_CardSize>Card Size</ResearchOrganized2_CardSize>
+  <ResearchOrganized2_CardSizeTip>Compact cards show the project's name only and fit more on screen; Large cards have room for bigger icons.</ResearchOrganized2_CardSizeTip>
+  <ResearchOrganized2_CardSizeButtonTip>Now {0}. Click to change.</ResearchOrganized2_CardSizeButtonTip>
+  <ResearchOrganized2_CardSizeCompact>Compact</ResearchOrganized2_CardSizeCompact>
+  <ResearchOrganized2_CardSizeNormal>Normal</ResearchOrganized2_CardSizeNormal>
+  <ResearchOrganized2_CardSizeLarge>Large</ResearchOrganized2_CardSizeLarge>
+  <ResearchOrganized2_OpenNodeResearch>Open Node Research</ResearchOrganized2_OpenNodeResearch>
+  <ResearchOrganized2_OpenSemiRandom>Open Semi Random Research</ResearchOrganized2_OpenSemiRandom>
+  <ResearchOrganized2_OpenResearchQueue>Open Research Queue</ResearchOrganized2_OpenResearchQueue>
   <ResearchOrganized2_CardHoverCardTip>Shows a card with the project's description, cost, prerequisites and everything it unlocks when you hover over it.</ResearchOrganized2_CardHoverCardTip>
 </LanguageData>
