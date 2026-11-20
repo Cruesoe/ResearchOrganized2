@@ -31,7 +31,7 @@ namespace ResearchOrganized2
 
         public static float GlobalXStep = 1f;
         public static float GlobalYStep = 0.63f;
-        public static int GlobalMaxNodesPerColumn = 12;
+        public static int GlobalMaxNodesPerColumn = 16;
 
         static ResearchOrganizedMain()
         {

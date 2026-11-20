@@ -27,7 +27,7 @@ In some cases the result is not strictly linear, but I believe it makes the tree
 
 [h2]Settings[/h2]
 [list]
-[*][b]Research window[/b]: full screen, open on the current project, tab project counts, curved lines, whole-chain highlight, era bands, time left, and hiding Node Research's emergence lines.
+[*][b]Research window[/b]: full screen (on by default), open on the current project, tab project counts, curved lines, whole-chain highlight, era bands, time left, and hiding Node Research's emergence lines.
 [*][b]Cards[/b]: card size, unlock icons, techprint and study counters, progress strip and hover card.
 [*][b]Tabs[/b]: Combine All Tabs puts everything except Anomaly, Gravship and Save Our Ship 2 on the Main tab, with each era in its own block from left to right, with or without a gap and lines between eras. Combine Industrial merges High and Late Industrial back into one Industrial tab.
 [*][b]Colors[/b]: color cards by era, or use plain cards. Each era's color is picked on UI Rethemed - Core's settings page.

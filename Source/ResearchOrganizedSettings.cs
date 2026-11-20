@@ -17,7 +17,7 @@ namespace ResearchOrganized2
         public bool writeLayoutLog = false;
         public bool hideUnavailableProjects = false;
         public bool hideFutureTechLevels = false;
-        public bool fullScreenResearch = false;
+        public bool fullScreenResearch = true;
         public bool matchUIRethemed = true;
         public bool hideFinishedProjects = false;
         public bool cardUnlockIcons = true;
@@ -57,7 +57,7 @@ namespace ResearchOrganized2
             Scribe_Values.Look(ref writeLayoutLog, "writeLayoutLog", false);
             Scribe_Values.Look(ref hideUnavailableProjects, "hideUnavailableProjects", false);
             Scribe_Values.Look(ref hideFutureTechLevels, "hideFutureTechLevels", false);
-            Scribe_Values.Look(ref fullScreenResearch, "fullScreenResearch", false);
+            Scribe_Values.Look(ref fullScreenResearch, "fullScreenResearch", true);
             Scribe_Values.Look(ref matchUIRethemed, "matchUIRethemed", true);
             Scribe_Values.Look(ref hideFinishedProjects, "hideFinishedProjects", false);
             Scribe_Values.Look(ref cardUnlockIcons, "cardUnlockIcons", true);

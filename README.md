@@ -21,7 +21,7 @@ Sorts research projects into tech-level tabs and lays each tab out as a tidy, re
 - Tab tooltips show completed projects and research points, and the counts can be shown on the tabs too.
 - Empty tabs are hidden.
 - Projects caught in a circular dependency are outlined in red and named in the log.
-- **Full Screen Research Window** makes the window as tall as the screen; a button in its title bar toggles it.
+- **Full Screen Research Window**, on by default, makes the window as tall as the screen; a button in its title bar toggles it.
 - Schematics can teach projects from every era tab.
 - Works with Node Research: foundation technologies get a gold corner mark, and emergence nodes stay beside their branch without cluttering lines. Its vanilla menu button opens this window, and a button in this window's title bar goes back.
 - Semi Random Research - Continued and Research Queue open this window from their tree buttons, and a button in its title bar goes back.
