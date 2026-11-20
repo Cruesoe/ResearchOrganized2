@@ -31,6 +31,8 @@ namespace ResearchOrganized2
         /// <summary>The card size in use, read from the settings at the start of each canvas draw.</summary>
         private static CardMetrics M = Sizes[1];
         private int metricsSize = -1;
+        private float metricsColumnSpacing = -1f;
+        private float metricsRowSpacing = -1f;
 
         private float CardWidth => M.width;
         private float CardHeight => M.height;
@@ -143,14 +145,21 @@ namespace ResearchOrganized2
         private static Rect CardRect(ResearchProjectDef project) =>
             new Rect(PosX(project), PosY(project), M.width + ExtraWidth(project), M.height);
 
-        /// <summary>Picks up a changed card size; every tab is homed again, since its positions all moved.</summary>
+        /// <summary>Picks up a changed card size or spacing; every tab is homed again, since its positions all moved.</summary>
         private void UpdateMetrics()
         {
-            int size = Mathf.Clamp(ResearchOrganizedMod.settings.cardSize, 0, Sizes.Length - 1);
-            if (size == metricsSize) return;
+            var settings = ResearchOrganizedMod.settings;
+            int size = Mathf.Clamp(settings.cardSize, 0, Sizes.Length - 1);
+            if (size == metricsSize && settings.columnSpacing == metricsColumnSpacing && settings.rowSpacing == metricsRowSpacing) return;
             bool changed = metricsSize >= 0;
             metricsSize = size;
+            metricsColumnSpacing = settings.columnSpacing;
+            metricsRowSpacing = settings.rowSpacing;
             M = Sizes[size];
+            // Scales the gap between neighboring cards, one layout step apart, leaving the cards' own size alone.
+            float xStep = Mathf.Max(0.1f, ResearchOrganizedMain.GlobalXStep), yStep = Mathf.Max(0.1f, ResearchOrganizedMain.GlobalYStep);
+            M.perX = (M.width + (xStep * M.perX - M.width) * metricsColumnSpacing) / xStep;
+            M.perY = (M.height + (yStep * M.perY - M.height) * metricsRowSpacing) / yStep;
             if (!changed) return;
             homedTabs.Clear();
             projectsSource = null;

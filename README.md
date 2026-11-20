@@ -12,7 +12,7 @@ Sorts research projects into tech-level tabs and lays each tab out as a tidy, re
 - Search finds projects by name or by anything they unlock, and chips in the window show or hide locked, finished and future-era projects.
 - Era bands tint each era's columns, with the era's title pinned along the top, on tabs laid out era by era.
 - Research times: roughly how long each project takes to research is shown on its card, hover card and details, the progress bar shows how long the current project has left, and queue rows show when each project should be done, all at the colony's research pace over the last day (saved with the game).
-- Cards come in Compact, Normal and Large sizes.
+- Cards come in Compact, Normal and Large sizes, with adjustable column and row spacing and a choice of how many projects stack in each column.
 - Projects are grouped into Primitive, Neolithic, Medieval, Industrial, High and Late Industrial, Spacer, Ultra, Archotech, Anomaly and Miscellaneous tabs.
 - Each tab gets a clean, non-overlapping layout with fewer crossing lines. Follow-ups sit to the right of what they depend on, and branches fill the free space beside their prerequisites.
 - **Combine All Tabs** puts every project except Anomaly, Gravship and Save Our Ship 2 on the Main tab, with each tech level in its own block from left to right. A gap between the blocks and the lines between eras can each be turned on or off; by default it looks like the vanilla tree, with no gap and every line drawn.

@@ -121,6 +121,13 @@
   <ResearchOrganized2_HoverTimeUnknown>Time: shown once the colony has done an hour of research</ResearchOrganized2_HoverTimeUnknown>
   <ResearchOrganized2_CardSize>Card Size</ResearchOrganized2_CardSize>
   <ResearchOrganized2_CardSizeTip>Compact cards show the project's name only and fit more on screen; Large cards have room for bigger icons.</ResearchOrganized2_CardSizeTip>
+  <ResearchOrganized2_ColumnSpacing>Column Spacing</ResearchOrganized2_ColumnSpacing>
+  <ResearchOrganized2_ColumnSpacingTip>The gap between columns of cards in the research window, as a share of the usual gap. Lower fits more on screen; higher leaves more room for lines.</ResearchOrganized2_ColumnSpacingTip>
+  <ResearchOrganized2_RowSpacing>Row Spacing</ResearchOrganized2_RowSpacing>
+  <ResearchOrganized2_RowSpacingTip>The gap between cards stacked in a column, as a share of the usual gap.</ResearchOrganized2_RowSpacingTip>
+  <ResearchOrganized2_MaxPerColumn>Projects Per Column</ResearchOrganized2_MaxPerColumn>
+  <ResearchOrganized2_MaxPerColumnTip>The most projects stacked in one column before the layout starts another. Fewer makes a wider, shorter tree; more makes a taller, narrower one. The tree is laid out again when you close the settings.</ResearchOrganized2_MaxPerColumnTip>
+  <ResearchOrganized2_ResetValue>Reset to default</ResearchOrganized2_ResetValue>
   <ResearchOrganized2_CardSizeButtonTip>Now {0}. Click to change.</ResearchOrganized2_CardSizeButtonTip>
   <ResearchOrganized2_CardSizeCompact>Compact</ResearchOrganized2_CardSizeCompact>
   <ResearchOrganized2_CardSizeNormal>Normal</ResearchOrganized2_CardSizeNormal>

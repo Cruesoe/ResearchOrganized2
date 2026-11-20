@@ -25,6 +25,7 @@ namespace ResearchOrganized2
         private bool appliedSeparateEras;
         private int appliedMinorAnchorThreshold;
         private int appliedMajorAnchorThreshold;
+        private int appliedMaxPerColumn;
         private bool appliedWriteLayoutLog;
 
         private string minorThresholdBuffer;
@@ -42,6 +43,7 @@ namespace ResearchOrganized2
             appliedSeparateEras = settings.separateEras;
             appliedMinorAnchorThreshold = settings.minorAnchorChildThreshold;
             appliedMajorAnchorThreshold = settings.majorAnchorChildThreshold;
+            appliedMaxPerColumn = settings.maxPerColumn;
             appliedWriteLayoutLog = settings.writeLayoutLog;
             minorThresholdBuffer = settings.minorAnchorChildThreshold.ToString();
             majorThresholdBuffer = settings.majorAnchorChildThreshold.ToString();
@@ -60,6 +62,7 @@ namespace ResearchOrganized2
                                  || settings.separateEras != appliedSeparateEras
                                  || settings.minorAnchorChildThreshold != appliedMinorAnchorThreshold
                                  || settings.majorAnchorChildThreshold != appliedMajorAnchorThreshold
+                                 || settings.maxPerColumn != appliedMaxPerColumn
                                  || (settings.writeLayoutLog && !appliedWriteLayoutLog);
 
             base.WriteSettings();
@@ -74,6 +77,7 @@ namespace ResearchOrganized2
                 appliedSeparateEras = settings.separateEras;
                 appliedMinorAnchorThreshold = settings.minorAnchorChildThreshold;
                 appliedMajorAnchorThreshold = settings.majorAnchorChildThreshold;
+                appliedMaxPerColumn = settings.maxPerColumn;
                 ResearchOrganizedMain.OrganizeTabsAndLayout();
             }
             appliedWriteLayoutLog = settings.writeLayoutLog;
@@ -203,6 +207,8 @@ namespace ResearchOrganized2
             if (clicked) ChooseCardSize();
             TooltipHandler.TipRegion(row, T("ResearchOrganized2_CardSizeTip"));
             listing.Gap(listing.verticalSpacing);
+            Slider(listing, "ResearchOrganized2_ColumnSpacing", "ResearchOrganized2_ColumnSpacingTip", ref settings.columnSpacing, 0.5f, 3f, 0.05f, 1f, PercentText);
+            Slider(listing, "ResearchOrganized2_RowSpacing", "ResearchOrganized2_RowSpacingTip", ref settings.rowSpacing, 0.5f, 3f, 0.05f, 1f, PercentText);
             Checkbox(listing, "ResearchOrganized2_CardUnlockIcons", "ResearchOrganized2_CardUnlockIconsTip", ref settings.cardUnlockIcons);
             Checkbox(listing, "ResearchOrganized2_CardChips", "ResearchOrganized2_CardChipsTip", ref settings.cardChips);
             Checkbox(listing, "ResearchOrganized2_CardProgressStrip", "ResearchOrganized2_CardProgressStripTip", ref settings.cardProgressStrip);
@@ -245,6 +251,9 @@ namespace ResearchOrganized2
         {
             NumericField(listing, "ResearchOrganized2_MinorAnchor", "ResearchOrganized2_MinorAnchorTip", ref settings.minorAnchorChildThreshold, ref minorThresholdBuffer, 1f);
             NumericField(listing, "ResearchOrganized2_MajorAnchor", "ResearchOrganized2_MajorAnchorTip", ref settings.majorAnchorChildThreshold, ref majorThresholdBuffer, 2f);
+            float perColumn = settings.maxPerColumn;
+            Slider(listing, "ResearchOrganized2_MaxPerColumn", "ResearchOrganized2_MaxPerColumnTip", ref perColumn, 6f, 30f, 1f, 16f, WholeText);
+            settings.maxPerColumn = Mathf.RoundToInt(perColumn);
             Checkbox(listing, "ResearchOrganized2_WriteLayoutLog", "ResearchOrganized2_WriteLayoutLogTip", ref settings.writeLayoutLog);
         }
 
@@ -278,6 +287,28 @@ namespace ResearchOrganized2
             GUI.color = Color.white;
             TooltipHandler.TipRegion(rect, tip);
             listing.Gap(listing.verticalSpacing);
+        }
+
+        private static readonly Dictionary<int, string> numberTexts = new Dictionary<int, string>();
+        private static readonly System.Func<float, string> PercentText = value => CachedNumber(Mathf.RoundToInt(value * 100f), "%");
+        private static readonly System.Func<float, string> WholeText = value => CachedNumber(Mathf.RoundToInt(value), "");
+
+        private static string CachedNumber(int value, string suffix)
+        {
+            int key = suffix.Length > 0 ? value + 100000 : value;
+            if (!numberTexts.TryGetValue(key, out string text)) numberTexts[key] = text = value + suffix;
+            return text;
+        }
+
+        /// <summary>Core's slider row with a reset button that appears once the value is changed from <paramref name="usual"/>.</summary>
+        private void Slider(Listing_Standard listing, string key, string tipKey, ref float value, float min, float max, float step, float usual, System.Func<float, string> text)
+        {
+            value = UIRethemed.Core.SettingsCards.SliderLine(listing, T(key), T(tipKey), value, min, max, step, text, out Rect reset);
+            if (Mathf.Abs(value - usual) > step * 0.01f
+                && UIRethemed.Core.CoreWidgets.IconButton(reset, UIRethemed.Core.CoreWidgets.ResetTex, T("ResearchOrganized2_ResetValue"), null, false, null, true, 14f))
+            {
+                value = usual;
+            }
         }
 
         /// <summary>A dimmed line of explanation under a section's first row.</summary>

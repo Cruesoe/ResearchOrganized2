@@ -32,6 +32,9 @@ namespace ResearchOrganized2
         public bool eraBands = true;
         public bool showTimeLeft = true;
         public int cardSize = 1;
+        public int maxPerColumn = 16;
+        public float columnSpacing = 1f;
+        public float rowSpacing = 1f;
 
         public Color colorUndefined = new Color(0.60f, 0.60f, 0.60f);
         public Color colorAnimal = new Color(0.45f, 0.33f, 0.24f);
@@ -73,6 +76,9 @@ namespace ResearchOrganized2
             Scribe_Values.Look(ref eraBands, "eraBands", true);
             Scribe_Values.Look(ref showTimeLeft, "showTimeLeft", true);
             Scribe_Values.Look(ref cardSize, "cardSize", 1);
+            Scribe_Values.Look(ref maxPerColumn, "maxPerColumn", 16);
+            Scribe_Values.Look(ref columnSpacing, "columnSpacing", 1f);
+            Scribe_Values.Look(ref rowSpacing, "rowSpacing", 1f);
             Scribe_Values.Look(ref colorUndefined, "colorUndefined", new Color(0.60f, 0.60f, 0.60f));
             Scribe_Values.Look(ref colorAnimal, "colorAnimal", new Color(0.45f, 0.33f, 0.24f));
             Scribe_Values.Look(ref colorNeolithic, "colorNeolithic", new Color(0.40f, 0.00f, 0.00f));
@@ -111,6 +117,9 @@ namespace ResearchOrganized2
             eraBands = defaults.eraBands;
             showTimeLeft = defaults.showTimeLeft;
             cardSize = defaults.cardSize;
+            maxPerColumn = defaults.maxPerColumn;
+            columnSpacing = defaults.columnSpacing;
+            rowSpacing = defaults.rowSpacing;
             colorUndefined = defaults.colorUndefined;
             colorAnimal = defaults.colorAnimal;
             colorNeolithic = defaults.colorNeolithic;
