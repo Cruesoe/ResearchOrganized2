@@ -36,7 +36,7 @@ In some cases the result is not strictly linear, but I believe it makes the tree
 
 [h2]Compatibility[/h2]
 Needs [b][LFS] UI Rethemed - Core[/b].
-Works with [b]Node Research[/b] (foundation technologies wear a gold crown and rule, its vanilla menu button opens this window, and a button in this window's title bar goes back), [b]Semi Random Research - Continued[/b] and [b]Research Queue[/b] (their tree buttons open this window, with a button back in its title bar; they choose what to research, so this mod's queue is off while either is active), [b]Save Our Ship 2[/b] (its Ship and Archotech tabs keep their projects), and [b]ProgressionLESS[/b] and [b]VFE Tribals[/b] (their research lands in the right tabs).
+Works with [b]Node Research[/b] (foundation technologies wear a gold crown and rule, its vanilla menu button opens this window, and a button in this window's title bar goes back), [b]Semi Random Research - Continued[/b] and [b]Research Queue[/b] (their tree buttons open this window, with a button back in its title bar; this mod's queue is off while Research Queue is active, or while Semi Random Research's Prohibit normal project selection is on), [b]Save Our Ship 2[/b] (its Ship and Archotech tabs keep their projects), and [b]ProgressionLESS[/b] and [b]VFE Tribals[/b] (their research lands in the right tabs).
 Not compatible with Research: Organized, or with other research tab organizers, because they control the same system.
 Safe to add to an existing save. Removing it from a save logs one harmless error about its saved queue.
 

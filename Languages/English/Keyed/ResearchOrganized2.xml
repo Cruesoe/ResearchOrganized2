@@ -83,7 +83,7 @@
   <ResearchOrganized2_Queue>Queue</ResearchOrganized2_Queue>
   <ResearchOrganized2_QueueEmpty>Shift-click a project to queue it, along with any prerequisites it still needs. When the current project finishes, the first queued project that can start is researched next.</ResearchOrganized2_QueueEmpty>
   <ResearchOrganized2_QueueOffResearchQueue>Research Queue chooses what to research, so this queue is off. Use Research Queue's window instead.</ResearchOrganized2_QueueOffResearchQueue>
-  <ResearchOrganized2_QueueOffSemiRandom>Semi Random Research chooses what to research, so this queue is off.</ResearchOrganized2_QueueOffSemiRandom>
+  <ResearchOrganized2_QueueOffSemiRandom>Semi Random Research's Prohibit normal project selection setting is on, so it chooses what to research and this queue is off. Turn that setting off to use the queue.</ResearchOrganized2_QueueOffSemiRandom>
   <ResearchOrganized2_QueueClear>Clear queue</ResearchOrganized2_QueueClear>
   <ResearchOrganized2_QueueClearTip>Removes every project from the queue. The current project keeps going.</ResearchOrganized2_QueueClearTip>
   <ResearchOrganized2_QueueRemove>Remove from queue</ResearchOrganized2_QueueRemove>

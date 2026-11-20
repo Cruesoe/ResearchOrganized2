@@ -1,6 +1,7 @@
 using System;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.Sound;
 
@@ -54,6 +55,34 @@ namespace ResearchOrganized2
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        private static System.Reflection.FieldInfo semiRandomSettingsField;
+        private static System.Reflection.FieldInfo semiRandomRestrictField;
+        private static bool semiRandomResolved;
+        private static int restrictsFrame = -1;
+        private static bool restricts;
+
+        /// <summary>Semi Random Research's "Prohibit normal project selection" setting, read once a frame; false without the mod.</summary>
+        public static bool SemiRandomRestricts
+        {
+            get
+            {
+                if (!SemiRandomActive) return false;
+                if (restrictsFrame == Time.frameCount) return restricts;
+                restrictsFrame = Time.frameCount;
+                if (!semiRandomResolved)
+                {
+                    semiRandomResolved = true;
+                    var modType = AccessTools.TypeByName("CM_Semi_Random_Research.SemiRandomResearchMod");
+                    if (modType != null) semiRandomSettingsField = AccessTools.Field(modType, "settings");
+                    if (semiRandomSettingsField != null) semiRandomRestrictField = AccessTools.Field(semiRandomSettingsField.FieldType, "featureEnabled");
+                }
+                // Unreadable settings count as restricting, the mod's own default.
+                object settings = semiRandomSettingsField?.GetValue(null);
+                restricts = settings == null || semiRandomRestrictField == null || (bool)semiRandomRestrictField.GetValue(settings);
+                return restricts;
             }
         }
 

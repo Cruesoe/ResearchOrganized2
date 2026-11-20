@@ -15,8 +15,9 @@ namespace ResearchOrganized2
         /// <summary>Counts up whenever the queue changes, so cached positions are rebuilt.</summary>
         public static int Version { get; private set; }
 
-        /// <summary>Research Queue and Semi Random Research choose what to research themselves, so the queue is off with either.</summary>
-        public static bool Available => !WindowHandover.ResearchQueueActive && !WindowHandover.SemiRandomActive;
+        /// <summary>Off while Research Queue is active, or while Semi Random Research's "Prohibit normal project selection" is on,
+        /// since either then chooses what to research.</summary>
+        public static bool Available => !WindowHandover.ResearchQueueActive && !WindowHandover.SemiRandomRestricts;
 
         private static ProjectQueueComponent Component => Current.Game?.GetComponent<ProjectQueueComponent>();
 
