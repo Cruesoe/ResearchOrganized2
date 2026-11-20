@@ -1,39 +1,39 @@
-<?xml version="1.0" encoding="utf 8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
   <name>Research: Organized 2</name>
   <author>Cruesoe</author>
   <packageId>cruesoe.research.organized2</packageId>
   <modVersion>261115</modVersion>
-  <description>Sorts research projects into tech level tabs and lays each tab out as a tidy, readable tree.
+  <description>Sorts research projects into tech-level tabs and lays each tab out as a tidy, readable tree.
 
 Research window
-  A research window of its own, built on UI Rethemed   Core: pan and zoom, a research queue on the left (shift click to queue, drag to reorder), a details panel on the right, the current project's progress along the top, search and filter chips.
-  Cards show their era's color and state, unlock icons, techprint and study counters, a progress strip and a hover card.
-  Curved lines, and the selected project's whole prerequisite chain lights up.
-  Era bands tint each era's columns, with the era's title pinned along the top, on tabs laid out era by era.
-  The active project bar shows roughly how long the current project has left, at the colony's recent pace.
-  Compact, Normal and Large cards.
-  Era colors are picked on UI Rethemed   Core's settings page, and can be turned off.
+- A research window of its own, built on UI Rethemed - Core: pan and zoom, a research queue on the left (shift-click to queue, drag to reorder), a details panel on the right, the current project's progress along the top, search and filter chips.
+- Cards show their era's color and state, unlock icons, techprint and study counters, a progress strip and a hover card.
+- Curved lines, and the selected project's whole prerequisite chain lights up.
+- Era bands tint each era's columns, with the era's title pinned along the top, on tabs laid out era by era.
+- Research times: roughly how long each project takes to research is shown on its card, hover card and details, the progress bar shows how long the current project has left, and queue rows show when each project should be done, all at the colony's research pace over the last day (saved with the game).
+- Compact, Normal and Large cards.
+- Era colors are picked on UI Rethemed - Core's settings page, and can be turned off.
 
 Tabs
-  Projects are grouped into Primitive, Neolithic, Medieval, Industrial, High and Late Industrial, Spacer, Ultra, Archotech, Anomaly and Miscellaneous tabs.
-  Combine All Tabs puts every project except Anomaly, Gravship and Save Our Ship 2 on the Main tab, with each tech level in its own block from left to right. A gap between the blocks and the lines between eras can each be turned on or off.
-  Combine Industrial merges High and Late Industrial back into one Industrial tab.
-  Tab tooltips show completed projects and research points, and the counts can be shown on the tabs too.
-  Empty tabs are hidden.
+- Projects are grouped into Primitive, Neolithic, Medieval, Industrial, High and Late Industrial, Spacer, Ultra, Archotech, Anomaly and Miscellaneous tabs.
+- Combine All Tabs puts every project except Anomaly, Gravship and Save Our Ship 2 on the Main tab, with each tech level in its own block from left to right. A gap between the blocks and the lines between eras can each be turned on or off.
+- Combine Industrial merges High and Late Industrial back into one Industrial tab.
+- Tab tooltips show completed projects and research points, and the counts can be shown on the tabs too.
+- Empty tabs are hidden.
 
 Layout
-  Every tab gets a clean, non overlapping layout with fewer crossing lines.
-  Follow ups sit to the right of what they depend on, and branches fill the free space beside their prerequisites instead of trailing off the end of the tab.
-  A project is raised to the tech level of its prerequisites, so a follow up never sits in an earlier era than what it needs. Its research cost changes to match.
-  Projects caught in a circular dependency are outlined in red and named in the log.
+- Every tab gets a clean, non-overlapping layout with fewer crossing lines.
+- Follow-ups sit to the right of what they depend on, and branches fill the free space beside their prerequisites instead of trailing off the end of the tab.
+- A project is raised to the tech level of its prerequisites, so a follow-up never sits in an earlier era than what it needs. Its research cost changes to match.
+- Projects caught in a circular dependency are outlined in red and named in the log.
 
 Compatibility
-  Node Research: foundation technologies wear a gold crown and rule, and emergence nodes stay beside their branch without cluttering lines. Its vanilla menu button opens this window, and a button in this window's title bar goes back.
-  Semi Random Research   Continued and Research Queue: their tree buttons open this window, and a button in its title bar goes back.
-  ProgressionLESS: loads after every mod in the suite, so their research lands in the right tabs.
-  VFE Tribals: its Basics tab takes the Primitive projects.
-  Save Our Ship 2: its Ship and Archotech tabs keep their own projects, even with Combine All Tabs on.</description>
+- Node Research: foundation technologies wear a gold crown and rule, and emergence nodes stay beside their branch without cluttering lines. Its vanilla menu button opens this window, and a button in this window's title bar goes back.
+- Semi Random Research - Continued and Research Queue: their tree buttons open this window, and a button in its title bar goes back.
+- ProgressionLESS: loads after every mod in the suite, so their research lands in the right tabs.
+- VFE Tribals: its Basics tab takes the Primitive projects.
+- Save Our Ship 2: its Ship and Archotech tabs keep their own projects, even with Combine All Tabs on.</description>
   <supportedVersions>
     <li>1.6</li>
     <li>1.7</li>
@@ -47,7 +47,7 @@ Compatibility
     </li>
     <li>
       <packageId>LazyFridayStudio.UIRethemed.Core</packageId>
-      <displayName>[LFS] UI Rethemed   Core</displayName>
+      <displayName>[LFS] UI Rethemed - Core</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/3832843406</steamWorkshopUrl>
     </li>
   </modDependencies>
