@@ -76,6 +76,41 @@
   <ResearchOrganized2_CardProgressStrip>Progress Strip</ResearchOrganized2_CardProgressStrip>
   <ResearchOrganized2_CardProgressStripTip>Shows a thin progress bar along the bottom of cards that have progress.</ResearchOrganized2_CardProgressStripTip>
   <ResearchOrganized2_CardHoverCard>Hover Card</ResearchOrganized2_CardHoverCard>
+  <ResearchOrganized2_HoverFoundation>Foundation: counts towards advancing to the next era.</ResearchOrganized2_HoverFoundation>
+  <ResearchOrganized2_Foundation>Foundation</ResearchOrganized2_Foundation>
+
+  <!-- Research queue -->
+  <ResearchOrganized2_Queue>Queue</ResearchOrganized2_Queue>
+  <ResearchOrganized2_QueueEmpty>Shift-click a project to queue it, along with any prerequisites it still needs. When the current project finishes, the first queued project that can start is researched next.</ResearchOrganized2_QueueEmpty>
+  <ResearchOrganized2_QueueOffResearchQueue>Research Queue chooses what to research, so this queue is off. Use Research Queue's window instead.</ResearchOrganized2_QueueOffResearchQueue>
+  <ResearchOrganized2_QueueOffSemiRandom>Semi Random Research chooses what to research, so this queue is off.</ResearchOrganized2_QueueOffSemiRandom>
+  <ResearchOrganized2_QueueClear>Clear queue</ResearchOrganized2_QueueClear>
+  <ResearchOrganized2_QueueClearTip>Removes every project from the queue. The current project keeps going.</ResearchOrganized2_QueueClearTip>
+  <ResearchOrganized2_QueueRemove>Remove from queue</ResearchOrganized2_QueueRemove>
+  <ResearchOrganized2_QueueRowTip>Click to show it in the tree. Drag to change its place in the queue.</ResearchOrganized2_QueueRowTip>
+  <ResearchOrganized2_QueueDoneIn>done in about {0}</ResearchOrganized2_QueueDoneIn>
+  <ResearchOrganized2_QueueStarted>Started researching {0} from the queue.</ResearchOrganized2_QueueStarted>
+  <ResearchOrganized2_QueuedAt>Queued #{0}</ResearchOrganized2_QueuedAt>
+  <ResearchOrganized2_Enqueue>Queue</ResearchOrganized2_Enqueue>
+  <ResearchOrganized2_Unqueue>Unqueue</ResearchOrganized2_Unqueue>
+  <ResearchOrganized2_EnqueueTip>Adds the project to the end of the queue, after any prerequisites it still needs, or takes it out again. Shift-click a card to do the same.</ResearchOrganized2_EnqueueTip>
+
+  <!-- Details panel -->
+  <ResearchOrganized2_Research>Research</ResearchOrganized2_Research>
+  <ResearchOrganized2_StopResearch>Stop research</ResearchOrganized2_StopResearch>
+  <ResearchOrganized2_Finished>Finished</ResearchOrganized2_Finished>
+  <ResearchOrganized2_Researching>Researching</ResearchOrganized2_Researching>
+  <ResearchOrganized2_Available>Available</ResearchOrganized2_Available>
+  <ResearchOrganized2_Locked>Locked</ResearchOrganized2_Locked>
+  <ResearchOrganized2_SectionNeeds>Needs</ResearchOrganized2_SectionNeeds>
+  <ResearchOrganized2_SectionUnlocks>Unlocks</ResearchOrganized2_SectionUnlocks>
+  <ResearchOrganized2_SectionLater>Unlocks with more research</ResearchOrganized2_SectionLater>
+  <ResearchOrganized2_SectionLeadsTo>Leads to</ResearchOrganized2_SectionLeadsTo>
+  <ResearchOrganized2_AnyResearchBench>A research bench</ResearchOrganized2_AnyResearchBench>
+  <ResearchOrganized2_Techprints>Techprints applied: {0} / {1}</ResearchOrganized2_Techprints>
+  <ResearchOrganized2_Study>Study {0}</ResearchOrganized2_Study>
+  <ResearchOrganized2_AlsoNeeds>Also needs: {0}</ResearchOrganized2_AlsoNeeds>
+
   <ResearchOrganized2_EraBands>Era Bands</ResearchOrganized2_EraBands>
   <ResearchOrganized2_EraBandsTip>On tabs laid out era by era, tints each era's columns and shows its name along the top.</ResearchOrganized2_EraBandsTip>
   <ResearchOrganized2_ShowTimeLeft>Show Time Left</ResearchOrganized2_ShowTimeLeft>

@@ -8,9 +8,10 @@ In some cases the result is not strictly linear, but I believe it makes the tree
 [*]Cards show their era's color and their state at a glance (finished, available, being researched, locked), with up to three unlock icons, techprint and study counters, a progress strip and a hover card listing what the project needs and what it unlocks without further research.
 [*]Cards come in Compact, Normal and Large sizes.
 [*]Lines between projects are smooth curves, and selecting a project lights up its whole prerequisite chain.
-[*]Era bands tint each era's columns and name it along the top, on tabs laid out era by era.
-[*]A foldable details panel shows the selected project's requirements, unlocks and the Research button.
-[*]A bar along the bottom shows the current project's progress and roughly how long it has left, at the colony's recent research pace.
+[*]Era bands tint each era's columns, with the era's title pinned along the top, on tabs laid out era by era.
+[*]A research queue in a foldable panel on the left: shift-click a project to queue it along with any prerequisites it still needs, and drag to reorder. When the current project finishes, the next one starts. Folded, the queue still shows as icons.
+[*]A foldable details panel on the right shows what the selected project needs (met or not), what it unlocks now and with more research, what it leads to, and buttons to research or queue it.
+[*]A bar along the top shows the current project's progress and roughly how long it has left, at the colony's recent research pace.
 [*]Search finds projects by name or by anything they unlock, and chips show or hide locked, finished and future-era projects.
 [/list]
 
@@ -35,9 +36,9 @@ In some cases the result is not strictly linear, but I believe it makes the tree
 
 [h2]Compatibility[/h2]
 Needs [b][LFS] UI Rethemed - Core[/b].
-Works with [b]Node Research[/b] (foundation technologies get a gold corner mark, its vanilla menu button opens this window, and a button in this window's title bar goes back), [b]Semi Random Research - Continued[/b] and [b]Research Queue[/b] (their tree buttons open this window, with a button back in its title bar), [b]Save Our Ship 2[/b] (its Ship and Archotech tabs keep their projects), and [b]ProgressionLESS[/b] and [b]VFE Tribals[/b] (their research lands in the right tabs).
+Works with [b]Node Research[/b] (foundation technologies wear a gold crown and rule, its vanilla menu button opens this window, and a button in this window's title bar goes back), [b]Semi Random Research - Continued[/b] and [b]Research Queue[/b] (their tree buttons open this window, with a button back in its title bar; they choose what to research, so this mod's queue is off while either is active), [b]Save Our Ship 2[/b] (its Ship and Archotech tabs keep their projects), and [b]ProgressionLESS[/b] and [b]VFE Tribals[/b] (their research lands in the right tabs).
 Not compatible with Research: Organized, or with other research tab organizers, because they control the same system.
-Safe to add to or remove from an existing save.
+Safe to add to an existing save. Removing it from a save logs one harmless error about its saved queue.
 
 [h2]Credits[/h2]
 Inspired by [b]Leo39994[/b] (Clean Research Sort), [b]Aelanna[/b] (Research Tab Colours), [b]Mlie[/b] (Organized Research Tab [Continued]) and [b]Laz[/b] (Organized Research Tab). Thanks to [b]Ferny[/b] (Progression mod pack) and [b]LordBeef[/b] (Path of the Muffalo) for their mod packs, which were invaluable during testing, and to the wider RimWorld modding community.

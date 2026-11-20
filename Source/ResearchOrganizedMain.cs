@@ -122,6 +122,7 @@ namespace ResearchOrganized2
 
             UnavailableProjectFilter.Patch(harmony);
             ResearchRate.Patch(harmony);
+            ProjectQueue.Patch(harmony);
 
             // The UI Rethemed look for the rest of the research window, used only while Match UI Rethemed Theme is on.
             ResearchWindowTheme.Patch(harmony);

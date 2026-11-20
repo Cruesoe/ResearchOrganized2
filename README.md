@@ -7,9 +7,10 @@ Sorts research projects into tech-level tabs and lays each tab out as a tidy, re
 - A research window of its own, in UI Rethemed's look: drag to pan and use the mouse wheel to zoom, with a Fit button, and each tab remembers its view.
 - Cards show their era's color and their state at a glance (finished, available, being researched, locked), with up to three unlock icons, techprint and study counters, a progress strip and a hover card listing what the project needs and what it unlocks without further research.
 - Lines between projects are smooth curves, and selecting a project lights up its whole prerequisite chain.
-- A foldable details panel shows the selected project's requirements, unlocks and the Research button; a bar along the bottom shows the current project's progress.
+- A research queue in a foldable panel on the left: shift-click a project to queue it along with any prerequisites it still needs, drag to reorder, and the next project starts when the current one finishes. Folded, it still shows the queued projects as icons.
+- A foldable details panel on the right shows the selected project's requirements met and unmet, what it unlocks, what it leads to, and buttons to research or queue it; a bar along the top shows the current project's progress.
 - Search finds projects by name or by anything they unlock, and chips in the window show or hide locked, finished and future-era projects.
-- Era bands tint each era's columns and name it along the top, on tabs laid out era by era.
+- Era bands tint each era's columns, with the era's title pinned along the top, on tabs laid out era by era.
 - The active project bar shows roughly how long the current project has left, at the colony's research pace over the last day.
 - Cards come in Compact, Normal and Large sizes.
 - Projects are grouped into Primitive, Neolithic, Medieval, Industrial, High and Late Industrial, Spacer, Ultra, Archotech, Anomaly and Miscellaneous tabs.
@@ -23,7 +24,7 @@ Sorts research projects into tech-level tabs and lays each tab out as a tidy, re
 - Projects caught in a circular dependency are outlined in red and named in the log.
 - **Full Screen Research Window**, on by default, makes the window as tall as the screen; a button in its title bar toggles it.
 - Schematics can teach projects from every era tab.
-- Works with Node Research: foundation technologies get a gold corner mark, and emergence nodes stay beside their branch without cluttering lines. Its vanilla menu button opens this window, and a button in this window's title bar goes back.
+- Works with Node Research: foundation technologies wear a gold crown and rule, and emergence nodes stay beside their branch without cluttering lines. Its vanilla menu button opens this window, and a button in this window's title bar goes back.
 - Semi Random Research - Continued and Research Queue open this window from their tree buttons, and a button in its title bar goes back.
 - Loads after the ProgressionLESS suite, so its research lands in the right tabs.
 - With VFE Tribals, its Basics tab takes the Primitive projects.

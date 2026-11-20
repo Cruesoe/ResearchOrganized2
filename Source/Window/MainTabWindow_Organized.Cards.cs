@@ -19,6 +19,23 @@ namespace ResearchOrganized2
             public string hoverBody;
             public int hoverVersion = -1;
             public readonly List<Def> icons = new List<Def>();
+            public int iconsVersion = -1;
+        }
+
+        /// <summary>Up to three things the project unlocks without further research, refreshed as research completes.</summary>
+        private static List<Def> Icons(ResearchProjectDef project, CardInfo info)
+        {
+            int version = ResearchOrganizedMain.StatsVersion;
+            if (info.iconsVersion == version) return info.icons;
+            info.iconsVersion = version;
+            info.icons.Clear();
+            var unlocked = project.UnlockedDefs;
+            for (int i = 0; i < unlocked.Count && info.icons.Count < MaxCardIcons; i++)
+            {
+                if ((unlocked[i] is BuildableDef || unlocked[i] is RecipeDef recipe && recipe.ProducedThingDef != null) && UnlocksNow(project, unlocked[i]))
+                    info.icons.Add(unlocked[i]);
+            }
+            return info.icons;
         }
 
         private static readonly Dictionary<ResearchProjectDef, CardInfo> cardInfo = new Dictionary<ResearchProjectDef, CardInfo>();
@@ -44,12 +61,6 @@ namespace ResearchOrganized2
                 label = project.LabelCap,
                 cost = project.CostApparent.ToString("F0")
             };
-            var unlocked = project.UnlockedDefs;
-            for (int i = 0; i < unlocked.Count && info.icons.Count < MaxCardIcons; i++)
-            {
-                if (unlocked[i] is BuildableDef || unlocked[i] is RecipeDef recipe && recipe.ProducedThingDef != null)
-                    info.icons.Add(unlocked[i]);
-            }
             cardInfo[project] = info;
             return info;
         }
@@ -94,6 +105,7 @@ namespace ResearchOrganized2
         {
             var text = new StringBuilder();
             if (!project.description.NullOrEmpty()) text.AppendLine(project.description).AppendLine();
+            if (ResearchOrganizedLayout.IsFoundationTech(project)) text.AppendLine("ResearchOrganized2_HoverFoundation".Translate()).AppendLine();
             text.AppendLine("ResearchOrganized2_HoverCost".Translate(project.CostApparent.ToString("F0")));
             if (!project.prerequisites.NullOrEmpty())
             {
@@ -158,6 +170,7 @@ namespace ResearchOrganized2
             bool locked = !finished && !current && !project.CanStartNow;
             bool selected = Selected == project;
             bool hidden = project.IsHidden;
+            bool foundation = ResearchOrganizedLayout.IsFoundationTech(project);
             bool searchedOut = searchMatches != null && !searchMatches.Contains(project);
             float alpha = searchedOut ? 0.35f : 1f;
             Color era = settings.disableCustomColors ? Theme.HighlightGray : ResearchOrganizedMain.EraColor(project);
@@ -172,6 +185,7 @@ namespace ResearchOrganized2
                     : selected ? Color.white
                     : current ? Theme.HighlightYellow
                     : chain.Contains(project) ? Theme.HighlightBlue
+                    : foundation ? Color.Lerp(FoundationGold, Theme.BG, locked ? 0.45f : 0f)
                     : locked ? Theme.BGLight
                     : era;
                 Rounded.BeginBatch();
@@ -195,12 +209,6 @@ namespace ResearchOrganized2
                     Rect strip = new Rect(card.x + 3f, card.yMax - 4f, (card.width - 6f) * Mathf.Clamp01(progress), 2f);
                     Theme.Fill(strip, Faces.Fade(current ? Theme.HighlightYellow : Theme.HighlightBlue, alpha));
                 }
-                if (ResearchOrganizedLayout.IsFoundationTech(project))
-                {
-                    GUI.color = Faces.Fade(Theme.HighlightYellow, 0.9f * alpha);
-                    GUI.DrawTexture(new Rect(card.xMax - 12f * zoom, card.y, 12f * zoom, 12f * zoom), ResearchOrganizedMain.FoundationNotchTex);
-                    GUI.color = Color.white;
-                }
                 float extra = ExtraWidth(project) * zoom;
                 if (extra > 0f)
                 {
@@ -211,9 +219,63 @@ namespace ResearchOrganized2
             }
 
             if (zoom >= 0.6f) DrawCardText(project, info, card, zoom, finished, current, locked, hidden, alpha, settings);
+            if (foundation) DrawFoundationMark(card, zoom, alpha);
+            int queued = ProjectQueue.IndexOf(project);
+            if (queued >= 0) DrawQueueBadge(card, queued, alpha);
 
             if (settings.cardHoverCard && !hidden && Mouse.IsOver(card))
                 CoreWidgets.Tip(card, info.label, HoverText(project, info), null, era);
+        }
+
+        /// <summary>Node Research's foundation projects: a gold rule along the top and a crown medallion on the top-right corner.</summary>
+        internal static readonly Color FoundationGold = new Color(0.93f, 0.76f, 0.32f);
+        private static Texture2D crownIcon;
+
+        private static void DrawFoundationMark(Rect card, float zoom, float alpha)
+        {
+            crownIcon = crownIcon ?? CoreWidgets.Icon("crown-simple");
+            if (Event.current.type != EventType.Repaint) return;
+            Theme.Fill(new Rect(card.x + 8f, card.y + 1f, card.width - 16f, 2f), Faces.Fade(FoundationGold, 0.85f * alpha));
+            float size = Mathf.Round(Mathf.Clamp(20f * zoom, 14f, 24f));
+            Rect medal = new Rect(card.xMax - size * 0.7f, card.y - size * 0.3f, size, size);
+            Rounded.BeginBatch();
+            try
+            {
+                Rounded.Fill(medal, Faces.Fade(Color.Lerp(Theme.BGDark, FoundationGold, 0.25f), alpha));
+                Rounded.Border(medal, Faces.Fade(FoundationGold, alpha));
+            }
+            finally
+            {
+                Rounded.EndBatch();
+            }
+            GUI.color = Faces.Fade(FoundationGold, alpha);
+            CoreWidgets.DrawIcon(medal.ContractedBy(size * 0.2f), crownIcon);
+            GUI.color = Color.white;
+        }
+
+        private static readonly string[] queueNumbers = new string[100];
+
+        /// <summary>The project's place in the research queue, on its top-left corner.</summary>
+        private static void DrawQueueBadge(Rect card, int index, float alpha)
+        {
+            string number = index < queueNumbers.Length ? queueNumbers[index] ?? (queueNumbers[index] = (index + 1).ToString()) : (index + 1).ToString();
+            Text.Font = GameFont.Small;
+            float width = Mathf.Max(20f, Text.CalcSize(number).x + 8f);
+            Rect badge = new Rect(card.x - 6f, card.y - 8f, width, 20f);
+            if (Event.current.type == EventType.Repaint)
+            {
+                Rounded.BeginBatch();
+                try
+                {
+                    Rounded.Fill(badge, Faces.Fade(Theme.HighlightBlue, alpha));
+                    Rounded.Border(badge, Faces.Fade(Theme.BGDark, alpha));
+                }
+                finally
+                {
+                    Rounded.EndBatch();
+                }
+            }
+            CoreWidgets.Line(badge, number, Faces.Fade(Color.white, alpha), GameFont.Small, TextAnchor.MiddleCenter);
         }
 
         private void DrawCardText(ResearchProjectDef project, CardInfo info, Rect card, float zoom, bool finished, bool current, bool locked,
@@ -221,15 +283,17 @@ namespace ResearchOrganized2
         {
             float left = card.x + 6f + ExtraWidth(project) * zoom;
             float width = card.xMax - 6f - left;
+            // Room for the foundation medallion on the top-right corner.
+            float labelWidth = ResearchOrganizedLayout.IsFoundationTech(project) ? width - Mathf.Clamp(20f * zoom, 14f, 24f) * 0.6f : width;
             Color text = Faces.Fade(locked ? Theme.TextDim : Color.white, alpha);
             string label = hidden ? TranslationCache.Get("ResearchOrganized2_UnknownProject") : info.label;
             if (!M.twoRows)
             {
                 // Compact cards hold the name only, centered.
-                CoreWidgets.Line(new Rect(left, card.y, width, card.height), label, text);
+                CoreWidgets.Line(new Rect(left, card.y, labelWidth, card.height), label, text);
                 return;
             }
-            CoreWidgets.Line(new Rect(left, card.y + 2f, width, 22f), label, text);
+            CoreWidgets.Line(new Rect(left, card.y + 2f, labelWidth, 22f), label, text);
             if (zoom < 0.85f || hidden) return;
 
             // Second row: status on the left, requirement chips and unlock icons on the right.
@@ -238,10 +302,11 @@ namespace ResearchOrganized2
             float right = row.xMax;
             if (settings.cardUnlockIcons)
             {
-                for (int i = info.icons.Count - 1; i >= 0 && right - iconSize > row.x + 50f; i--)
+                var icons = Icons(project, info);
+                for (int i = icons.Count - 1; i >= 0 && right - iconSize > row.x + 50f; i--)
                 {
                     Rect icon = new Rect(right - iconSize, row.y + 2f, iconSize, iconSize);
-                    Widgets.DefIcon(icon, info.icons[i]);
+                    Widgets.DefIcon(icon, icons[i]);
                     right = icon.x - 3f;
                 }
             }

@@ -28,6 +28,7 @@ namespace ResearchOrganized2
         public bool highlightChain = true;
         public bool openOnCurrentProject = false;
         public bool detailsFolded = false;
+        public bool queueFolded = false;
         public bool eraBands = true;
         public bool showTimeLeft = true;
         public int cardSize = 1;
@@ -68,6 +69,7 @@ namespace ResearchOrganized2
             Scribe_Values.Look(ref highlightChain, "highlightChain", true);
             Scribe_Values.Look(ref openOnCurrentProject, "openOnCurrentProject", false);
             Scribe_Values.Look(ref detailsFolded, "detailsFolded", false);
+            Scribe_Values.Look(ref queueFolded, "queueFolded", false);
             Scribe_Values.Look(ref eraBands, "eraBands", true);
             Scribe_Values.Look(ref showTimeLeft, "showTimeLeft", true);
             Scribe_Values.Look(ref cardSize, "cardSize", 1);

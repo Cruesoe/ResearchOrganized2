@@ -189,13 +189,15 @@ namespace ResearchOrganized2
 
         // Era bands: a tinted column behind each era, with its name along the top, on tabs laid out era by era.
 
-        private const float EraLabelHeight = 28f;
+        private const float EraLabelHeight = 56f;
+        private const int EraTitleSize = 26;
 
         private struct EraBand
         {
             public float xMin;
             public float xMax;
             public string label;
+            public float labelWidth;
             public Color color;
         }
 
@@ -219,8 +221,8 @@ namespace ResearchOrganized2
                 else
                 {
                     if (!eraLabels.TryGetValue(project.techLevel, out string label))
-                        eraLabels[project.techLevel] = label = project.techLevel.ToStringHuman().CapitalizeFirst();
-                    band = new EraBand { xMin = card.xMin, xMax = card.xMax, label = label, color = ResearchOrganizedMain.EraColor(project) };
+                        eraLabels[project.techLevel] = label = project.techLevel.ToStringHuman().ToUpper();
+                    band = new EraBand { xMin = card.xMin, xMax = card.xMax, label = label, labelWidth = TitleText.Width(label, EraTitleSize), color = ResearchOrganizedMain.EraColor(project) };
                 }
                 ranges[project.techLevel] = band;
             }
@@ -264,9 +266,30 @@ namespace ResearchOrganized2
                     Theme.Fill(column, Faces.Fade(color, i % 2 == 0 ? 0.07f : 0.11f));
                     if (i > 0) Theme.Fill(new Rect(xMin, local.y, 1f, local.height), Faces.Fade(color, 0.3f));
                 }
-                // The name stays at the top of the canvas, over the visible part of its band.
-                Rect label = new Rect(column.x + 8f, local.y + 4f, Mathf.Max(0f, column.width - 16f), 22f);
-                CoreWidgets.Line(label, band.label, Faces.Fade(Color.Lerp(color, Color.white, 0.55f), 0.9f), GameFont.Small, TextAnchor.MiddleCenter);
+            }
+        }
+
+        /// <summary>Each era's title, pinned to the top of the canvas over a shaded strip that cards pass beneath, with a rule under it.</summary>
+        private void DrawEraTitles(ZoomView view, Rect local)
+        {
+            if (eraBands.Count == 0) return;
+            bool colors = !ResearchOrganizedMod.settings.disableCustomColors;
+            if (Event.current.type == EventType.Repaint)
+                Theme.Fill(new Rect(local.x, local.y, local.width, EraLabelHeight - 4f), Faces.Fade(Theme.BGDark, 0.82f));
+            for (int i = 0; i < eraBands.Count; i++)
+            {
+                var band = eraBands[i];
+                float xMin = Mathf.Max(local.xMin, view.ToScreen(new Vector2(band.xMin, 0f)).x);
+                float xMax = Mathf.Min(local.xMax, view.ToScreen(new Vector2(band.xMax, 0f)).x);
+                if (xMax - xMin < 60f) continue;
+                Color color = colors ? band.color : Theme.HighlightGray;
+                Rect title = new Rect(xMin + 8f, local.y + 6f, xMax - xMin - 16f, EraTitleSize + 10f);
+                TitleText.Draw(title, band.label, Color.Lerp(color, Color.white, 0.7f), EraTitleSize, TextAnchor.MiddleCenter);
+                if (Event.current.type == EventType.Repaint)
+                {
+                    float rule = Mathf.Min(title.width, band.labelWidth + 24f);
+                    Theme.Fill(new Rect(title.center.x - rule / 2f, title.yMax + 2f, rule, 2f), Faces.Fade(color, 0.9f));
+                }
             }
         }
 
@@ -353,6 +376,7 @@ namespace ResearchOrganized2
                 DrawEraBands(view, local);
                 if (Event.current.type == EventType.Repaint) DrawLines(view, local);
                 DrawCards(view, local);
+                DrawEraTitles(view, local);
             }
             finally
             {
@@ -368,6 +392,13 @@ namespace ResearchOrganized2
             {
                 var project = tabProjects[i];
                 if (!view.ToScreen(CardRect(project)).Contains(current.mousePosition)) continue;
+                // Shift-click adds the project to the queue, or takes it out again.
+                if (current.shift && ProjectQueue.Available && !project.IsHidden)
+                {
+                    ToggleQueued(project);
+                    current.Use();
+                    return;
+                }
                 if (!project.IsHidden && Selected != project)
                 {
                     SoundDefOf.Click.PlayOneShotOnCamera();

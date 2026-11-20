@@ -94,13 +94,14 @@ namespace ResearchOrganized2
                 Rect titleBar = new Rect(inner.x, inner.y, inner.width, TitleHeight);
                 DrawTitleBar(titleBar);
 
-                Rect body = new Rect(inner.x, titleBar.yMax + Gap, inner.width, inner.yMax - titleBar.yMax - Gap);
-                Rect activeBar = new Rect(body.x, body.yMax - ActiveBarHeight, body.width, ActiveBarHeight);
-                body.yMax = activeBar.y - Gap;
+                // The current project's progress runs under the title bar; queue left, tree in the middle, details right.
+                Rect activeBar = new Rect(inner.x, titleBar.yMax + Gap, inner.width, ActiveBarHeight);
+                Rect body = new Rect(inner.x, activeBar.yMax + Gap, inner.width, inner.yMax - activeBar.yMax - Gap);
 
                 float panelWidth = SidePanel.Width(ResearchOrganizedMod.settings.detailsFolded, PanelWidth);
                 Rect panel = new Rect(body.xMax - panelWidth, body.y, panelWidth, body.height);
-                Rect tree = new Rect(body.x, body.y, panel.x - Gap - body.x, body.height);
+                Rect queue = new Rect(body.x, body.y, QueuePanelWidth, body.height);
+                Rect tree = new Rect(queue.xMax + Gap, body.y, panel.x - Gap - queue.xMax - Gap, body.height);
 
                 Rect strip = new Rect(tree.x, tree.y, tree.width, TabStripHeight(tree.width));
                 Rect filters = new Rect(tree.x, strip.yMax + Gap, tree.width, FilterBarHeight);
@@ -109,6 +110,7 @@ namespace ResearchOrganized2
                 DrawTabStrip(strip);
                 DrawFilterBar(filters);
                 DrawCanvas(canvas);
+                DrawQueuePanel(queue);
                 DrawDetailsPanel(panel);
                 DrawActiveBar(activeBar);
             }

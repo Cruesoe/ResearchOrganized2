@@ -74,7 +74,7 @@ namespace ResearchOrganized2
         public static int Hour => Find.TickManager != null ? Find.TickManager.TicksGame / BucketTicks : 0;
 
         /// <summary>Progress per tick over the last day, or 0 until there is at least an hour of data.</summary>
-        private static float PerTick()
+        public static float PerTick()
         {
             EnsureGame();
             if (firstTick < 0) return 0f;
